@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<languagePattern id="IDEAL">
+	
+	<escape><![CDATA[\]]></escape>
+	<comment>
+		<begin><![CDATA[:]]></begin>
+		<end><![CDATA[\r\n]]></end>
+		<multiline>false</multiline>
+	</comment>	
+	<string>
+		<begin><![CDATA[']]></begin>
+		<end><![CDATA[\r\n]]></end>
+		<escape><![CDATA[\]]></escape>
+	</string>
+	
+
+	<types>
+		<ideal_program>
+			<header>
+					<pattern><![CDATA[->PROGRAM]]></pattern>
+			</header>
+			<identification.name>
+					<pattern><![CDATA[->PROGRAM ]]></pattern>
+					<value><![CDATA[[a-zA-Z0-9_\$\@\.]+]]></value>
+			</identification.name>
+			
+		
+			<IDEAL_Properties.IDEAL_LastUpdateDate>
+						<pattern><![CDATA[ DATE-CREATED  ]]></pattern>
+						<value><![CDATA[[0-9][0-9][0-9][0-9][0-9][0-9]]]></value>
+					</IDEAL_Properties.IDEAL_LastUpdateDate>
+					
+					<IDEAL_Properties.IDEAL_LastUpdateDate>
+						<pattern><![CDATA[ DATE-MODIFIED ]]></pattern>
+						<value><![CDATA[[0-9][0-9][0-9][0-9][0-9][0-9]]]></value>
+					</IDEAL_Properties.IDEAL_LastUpdateDate>
+					
+					<IDEAL_Properties.IDEAL_LastCompileDate>
+						<pattern><![CDATA[ DATE-COMPILED ]]></pattern>
+						<value><![CDATA[[0-9][0-9][0-9][0-9][0-9][0-9]]]></value>
+					</IDEAL_Properties.IDEAL_LastCompileDate>
+					
+					<IDEAL_Properties.IDEAL_LastUpdateBy>
+						<pattern><![CDATA[MODIFIED-BY  ]]></pattern>
+						<value><![CDATA[[A-Z0-9]+]]></value>
+					</IDEAL_Properties.IDEAL_LastUpdateBy>
+					
+					<IDEAL_Properties.IDEAL_CreationBy>
+						<pattern><![CDATA[CREATED-BY  ]]></pattern>
+						<value><![CDATA[[A-Z0-9]+]]></value>
+					</IDEAL_Properties.IDEAL_CreationBy>
+					
+				<IDEAL_Properties.IDEAL_RunStatus>
+						<pattern><![CDATA[RUN-STATUS ]]></pattern>
+						<value><![CDATA[[A-Z]+]]></value>
+					</IDEAL_Properties.IDEAL_RunStatus>
+					
+					<IDEAL_Properties.IDEAL_ShortDesc>
+						<pattern><![CDATA[SHORT\-DESC ']]></pattern>
+						<value><![CDATA[[\.]+]]></value>
+					</IDEAL_Properties.IDEAL_ShortDesc>
+			
+			<body>
+					<begin><![CDATA[VERSION]]></begin>
+				  <end><![CDATA[\->END\-PROGRAM]]></end>		
+					<nested>false</nested>
+			</body>
+			
+		</ideal_program>
+		
+		
+		<ideal_procedure>
+			<header>
+			<pattern><![CDATA[<<[a-zA-Z0-9_\[\]\.\-:_ &]*>>[ \t]+PROC(EDURE)*[ ]]]></pattern>
+			</header>
+			<identification.name>
+			<pattern><![CDATA[<<]]></pattern>
+			<value><![CDATA[[a-zA-Z0-9_\[\]\.\-:_ &]*]]></value>
+			</identification.name>
+			<body>
+			<begin><![CDATA[\r\n]]></begin>
+			<end><![CDATA[ENDPROC]]></end>
+			
+			<nested>false</nested>
+			</body>
+			
+		</ideal_procedure>
+		
+	
+	
+		
+		<ideal_panel>
+			<header>
+					<pattern><![CDATA[->PANEL]]></pattern>
+			</header>
+			<identification.name>
+					<pattern><![CDATA[->PANEL ]]></pattern>
+					<value><![CDATA[[a-zA-Z0-9_\$\@]+]]></value>
+			</identification.name>
+			<body>
+					<begin><![CDATA[VERSION]]></begin>
+					<end><![CDATA[->END-PANEL]]></end>		
+					<nested>false</nested>
+			</body>
+			
+		</ideal_panel>
+		
+		<ideal_report>
+			<header>
+					<pattern><![CDATA[->REPORT]]></pattern>
+			</header>
+			<identification.name>
+					<pattern><![CDATA[->REPORT ]]></pattern>
+					<value><![CDATA[[a-zA-Z0-9_\$\@]+]]></value>
+			</identification.name>
+			<body>
+					<begin><![CDATA[VERSION]]></begin>
+					<end><![CDATA[->END-REPORT]]></end>		
+					<nested>false</nested>
+			</body>
+			
+		</ideal_report>
+		
+		
+	</types>
+	
+	
+	<links>
+	
+		<accessWriteLink>
+				<pattern><![CDATA[(^| |\t)(PRODUCE)([[:space:]]|[+]|[-])+]]></pattern>
+				<callee><![CDATA[[[:word:]\#\&@\$\-\.]+]]></callee>
+		</accessWriteLink>
+
+        <useUpdateLink>
+			<pattern><![CDATA[CAST_WRITE_ACCESS ]]></pattern>
+			<callee><![CDATA[[[a-zA-Z0-9_\-]*]]></callee>
+		</useUpdateLink>
+		<useSelectLink>
+			<pattern><![CDATA[CAST_READ_ACCESS ]]></pattern>
+			<callee><![CDATA[[[a-zA-Z0-9_\-]*]]></callee>
+		</useSelectLink>
+	
+
+		<includeLink>
+			<pattern><![CDATA[USES-PANEL[ \t]*]]></pattern>
+			<callee><![CDATA[[[a-zA-Z0-9_\-]*]]></callee>
+		</includeLink>
+		<includeLink>
+			<pattern><![CDATA[USES-REPORT[ \t]*]]></pattern>
+			<callee><![CDATA[[[a-zA-Z0-9_\-]*]]></callee>
+		</includeLink>
+	
+	
+		<referLink>
+			<pattern><![CDATA[USES-DATAVIEW[ \t]*]]></pattern>
+			<callee><![CDATA[[[a-zA-Z0-9_\-]*]]></callee>
+		</referLink>
+
+ 	
+		<callLink>
+			<pattern><![CDATA[USES-PROGRAM[ \t]*]]></pattern>
+			<callee><![CDATA[[[a-zA-Z0-9_\-\.]*]]></callee>
+		</callLink>
+
+		<callProgLink>
+			<pattern><![CDATA[CALL[ \t]+]]></pattern>
+			<callee><![CDATA[[[a-zA-Z0-9_\-\.]*]]></callee>
+		</callProgLink>
+		
+	<referLink>
+			<pattern><![CDATA[FOR[ \t]+FIRST[ \t]+]]></pattern>
+			<callee><![CDATA[[[a-zA-Z0-9_\-]*]]></callee>
+		</referLink>
+
+
+<referLink>
+			<pattern><![CDATA[FOR[ \t]+THE[ \t]+FIRST[ \t]+]]></pattern>
+			<callee><![CDATA[[[a-zA-Z0-9_\-]*]]></callee>
+		</referLink>
+
+
+<referLink>
+			<pattern><![CDATA[FOR[ \t]+EACH[ \t]+]]></pattern>
+			<callee><![CDATA[[[a-zA-Z0-9_\-]*]]></callee>
+		</referLink>
+
+<useInsertLink>
+			<pattern><![CDATA[FOR[ \t]+NEW[ \t]+]]></pattern>
+			<callee><![CDATA[[[a-zA-Z0-9_\-]*]]></callee>
+		</useInsertLink>
+		
+<referLink>
+			<pattern><![CDATA[FOR[ \t]+[T]*[H]*[E]*[ \t]+(FIRST)[a-zA-Z0-9 -]*[ \t]+]]></pattern>
+			<callee><![CDATA[[[a-zA-Z0-9_\-]*]]></callee>
+		</referLink>
+
+		
+<useInsertLink>
+			<pattern><![CDATA[FOR[ \t]+[T]*[H]*[E]*[ \t]+(NEW)[a-zA-Z0-9 -]*[ \t]+]]></pattern>
+			<callee><![CDATA[[[a-zA-Z0-9_\-]*]]></callee>
+		</useInsertLink>
+
+
+	<monitorLink>
+				<pattern><![CDATA[CAST_USE_INDEX[ \t]+]]></pattern>
+			<callee><![CDATA[[[a-zA-Z0-9_\-\.]*]]></callee>
+	</monitorLink>
+
+
+
+
+	<accessExecLink>
+			<pattern><![CDATA[[ \t]*DO[ \t]+]]></pattern>
+			<callee><![CDATA[[[a-zA-Z0-9_\-]*]]></callee>
+	</accessExecLink>
+
+	</links>
+
+
+</languagePattern>
