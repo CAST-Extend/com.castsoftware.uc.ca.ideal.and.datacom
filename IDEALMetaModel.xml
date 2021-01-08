@@ -42,17 +42,17 @@
 	<type name="ideal_program" rid="2">
 		<description>IDEAL Program</description>	
 		<inheritedCategory name="UAObject"/>
-		<tree parent="callProgLink" category="CalleeLinkable"/>
-		<tree parent="callLink" category="CalleeLinkable"/>
-		<tree parent="callLink" category="CallerLinkable"/>
-		<tree parent="includeLink" category="CallerLinkable"/>
-		<tree parent="useSelectLink" category="CallerLinkable"/>
 		<inheritedCategory name="METRICABLE"/>
 		<inheritedCategory name="IDEAL"/>
 		<inheritedCategory name="APM Inventory Files"/>
 		<inheritedCategory name="APM Inventory Programs"/>
 		<inheritedCategory name="caseInsensitive"/>
 		<inheritedCategory name="IDEAL_Properties"/>
+		<tree parent="callProgLink" category="CalleeLinkable"/>
+		<tree parent="callLink" category="CalleeLinkable"/>
+		<tree parent="callLink" category="CallerLinkable"/>
+		<tree parent="includeLink" category="CallerLinkable"/>
+		<tree parent="useSelectLink" category="CallerLinkable"/>
 		<tree parent="sourceFile" category="amtParentship"/>
 		<tree parent="ideal_project" category="amtParentship"/>
 		<tree parent="EnlightenIDEAL" category="EnlightenTree"/>
@@ -61,6 +61,12 @@
 	<type name="ideal_procedure" rid="10">
 		<description>IDEAL Procedure</description>	
 		<inheritedCategory name="UAObject"/>
+		<inheritedCategory name="METRICABLE"/>
+		<inheritedCategory name="IDEAL"/>
+		<inheritedCategory name="APM IDEAL Artifacts"/>
+		<inheritedCategory name="APM Methods"/>
+		<inheritedCategory name="APM Inventory Methods"/>
+		<inheritedCategory name="caseInsensitive"/>
 		<tree parent="monitorLink" category="CallerLinkable"/>
 		<tree parent="callProgLink" category="CallerLinkable"/>
 		<tree parent="referLink" category="CallerLinkable"/>
@@ -69,12 +75,6 @@
 		<tree parent="useSelectLink" category="CallerLinkable"/>
 		<tree parent="accessExecLink" category="CalleeLinkable"/>
 		<tree parent="accessExecLink" category="CallerLinkable"/>
-		<inheritedCategory name="METRICABLE"/>
-		<inheritedCategory name="IDEAL"/>
-		<inheritedCategory name="APM IDEAL Artifacts"/>
-		<inheritedCategory name="APM Methods"/>
-		<inheritedCategory name="APM Inventory Methods"/>
-		<inheritedCategory name="caseInsensitive"/>
 		<tree parent="ideal_program" category="amtParentship"/>
 		<tree parent="ideal_project" category="amtParentship"/>
 		<tree parent="EnlightenIDEAL" category="EnlightenTree"/>
@@ -87,26 +87,30 @@
 		<description>IDEAL Panel</description>	
 		<inheritedCategory name="UAObject"/>
 		<tree parent="includeLink" category="CalleeLinkable"/>
-		<inheritedCategory name="METRICABLE"/>
-		<inheritedCategory name="IDEAL"/>
-		<inheritedCategory name="caseInsensitive"/>
 		<tree parent="sourceFile" category="amtParentship"/>
 		<tree parent="ideal_project" category="amtParentship"/>
 		<tree parent="EnlightenIDEAL" category="EnlightenTree"/>
+		<inheritedCategory name="METRICABLE"/>
+		<inheritedCategory name="IDEAL"/>
+		<inheritedCategory name="caseInsensitive"/>
 	</type>
 
 
 	<type name="ideal_report" rid="12">
 		<description>IDEAL Report</description>	
-		<inheritedCategory name="UAObject"/>
-		<tree parent="includeLink" category="CalleeLinkable"/>
-		<inheritedCategory name="METRICABLE"/>
 		<inheritedCategory name="IDEAL"/>
+		<inheritedCategory name="ESQLSearchable"/>
 		<inheritedCategory name="caseInsensitive"/>
-		<tree parent="sourceFile" category="amtParentship"/>
-        <tree parent="accessWriteLink" category="CalleeLinkable"/>
+		<inheritedCategory name="UAObject"/>
+		<inheritedCategory name="METRICABLE"/>
+		<inheritedCategory name="APM IDEAL Artifacts"/>
         <tree parent="ideal_project" category="amtParentship"/>
+		<tree parent="sourceFile" category="amtParentship"/>
 		<tree parent="EnlightenIDEAL" category="EnlightenTree"/>
+		<tree parent="includeLink" category="CalleeLinkable"/>
+		<tree parent="includeLink" category="CallerLinkable"/>
+        <tree parent="accessWriteLink" category="CalleeLinkable"/>
+		<tree parent="accessWriteLink" category="CallerLinkable"/>
 	</type>
 	
 	
