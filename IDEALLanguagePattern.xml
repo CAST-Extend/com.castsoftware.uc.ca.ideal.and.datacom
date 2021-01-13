@@ -129,8 +129,8 @@
 	<links>
 	
 		<accessWriteLink>
-				<pattern><![CDATA[(^| |\t)(PRODUCE)([[:space:]]|[+]|[-])+]]></pattern>
-				<callee><![CDATA[[[:word:]\#\&@\$\-]+]]></callee>
+				<pattern><![CDATA[[Pp][rR][oO][dD][uU][cC][eE]\s+]]></pattern>
+         <callee><![CDATA[([A-Za-z0-9]+)+]]></callee>
 		</accessWriteLink>
 
         <useUpdateLink>

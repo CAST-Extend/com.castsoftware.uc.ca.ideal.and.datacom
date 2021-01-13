@@ -75,6 +75,8 @@
 		<tree parent="useSelectLink" category="CallerLinkable"/>
 		<tree parent="accessExecLink" category="CalleeLinkable"/>
 		<tree parent="accessExecLink" category="CallerLinkable"/>
+		<tree parent="accessWriteLink" category="CalleeLinkable"/>
+		<tree parent="accessWriteLink" category="CallerLinkable"/>
 		<tree parent="ideal_program" category="amtParentship"/>
 		<tree parent="ideal_project" category="amtParentship"/>
 		<tree parent="EnlightenIDEAL" category="EnlightenTree"/>
