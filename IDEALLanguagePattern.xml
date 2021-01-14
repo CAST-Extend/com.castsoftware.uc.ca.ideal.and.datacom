@@ -133,6 +133,11 @@
          <callee><![CDATA[([A-Za-z0-9]+)+]]></callee>
 		</accessWriteLink>
 
+        <accessExecLink>
+             <pattern><![CDATA[[ \t]*QUIT[ \t]+]]></pattern>
+			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
+        </accessExecLink>
+        
         <useUpdateLink>
 			<pattern><![CDATA[CAST_WRITE_ACCESS ]]></pattern>
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
@@ -172,13 +177,13 @@
 		</callProgLink>
 		
         <referLink>
-			<pattern><![CDATA[FOR[ \t]+FIRST[ \t]+]]></pattern>
+			<pattern><![CDATA[FOR[ \t]+THE[ \t]+FIRST[ \t]+]]></pattern>
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
 		</referLink>
 
 
         <referLink>
-			<pattern><![CDATA[FOR[ \t]+THE[ \t]+FIRST[ \t]+]]></pattern>
+			<pattern><![CDATA[FOR[ \t]+FIRST[ \t]+]]></pattern>
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
 		</referLink>
 
@@ -193,16 +198,16 @@
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
 		</useInsertLink>
 		
-        <referLink>
+        <!--referLink>
 			<pattern><![CDATA[FOR[ \t]+[T]*[H]*[E]*[ \t]+(FIRST)[a-zA-Z0-9 -]*[ \t]+]]></pattern>
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
-		</referLink>
+		</referLink-->
 
 		
-        <useInsertLink>
+        <!--useInsertLink>
 			<pattern><![CDATA[FOR[ \t]+[T]*[H]*[E]*[ \t]+(NEW)[a-zA-Z0-9 -]*[ \t]+]]></pattern>
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
-		</useInsertLink>
+		</useInsertLink-->
 
 
         <monitorLink>
