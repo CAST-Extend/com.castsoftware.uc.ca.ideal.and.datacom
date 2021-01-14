@@ -14,6 +14,39 @@
 		<escape><![CDATA[\]]></escape>
 	</string>
 	
+   <keyword>FIRST</keyword>
+   <keyword>FOR</keyword>
+   <keyword>EACH</keyword>
+   <keyword>ALL</keyword>
+   <keyword>THE</keyword>
+   <keyword>ANY</keyword>
+   <keyword>WHERE</keyword>
+   <keyword>ORDERED</keyword>
+   <keyword>BY</keyword>
+   <keyword>UNIQUE</keyword>
+   <keyword>ASCENDING</keyword>
+   <keyword>DESCENDING</keyword>
+   <keyword>WHEN</keyword>
+   <keyword>NONE</keyword>
+   <keyword>ERROR</keyword>
+   <keyword>ENDFOR</keyword>
+   <keyword>ENDPROC</keyword>
+   <keyword>CALL</keyword>
+   <keyword>NO</keyword>
+   <keyword>UPDATE</keyword>
+   <keyword>INSERT</keyword>
+   <keyword>DO</keyword>
+   <keyword>LIST</keyword>
+   <keyword>NOTIFY</keyword>
+   <keyword>SELECT</keyword>
+   <keyword>ENDSEL</keyword>
+   <keyword>PROCEDURE</keyword>
+   <keyword>PROC</keyword>
+   <keyword>LOOP</keyword>
+   <keyword>ENDLOOP</keyword>
+   <keyword>TERMINATE</keyword>
+   <keyword>SET</keyword>
+   <keyword>DUPLICATE</keyword>
 
 	<types>
 		<ideal_program>
@@ -72,7 +105,7 @@
 		
 		<ideal_procedure>
 			<header>
-			<pattern><![CDATA[<<[a-zA-Z0-9_\[\]\.\-:_ &]*>>[ \t]+PROC(EDURE)*[ ]]]></pattern>
+			<pattern><![CDATA[<<[a-zA-Z0-9_\[\]\.\-:_ &]+>>[ \t]+(PROC)*(EDURE)*[ ]]]></pattern>
 			</header>
 			<identification.name>
 			<pattern><![CDATA[<<]]></pattern>
@@ -133,10 +166,10 @@
          <callee><![CDATA[([A-Za-z0-9]+)+]]></callee>
 		</accessWriteLink>
 
-        <accessExecLink>
+        <!--accessExecLink>
              <pattern><![CDATA[[ \t]*QUIT[ \t]+]]></pattern>
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
-        </accessExecLink>
+        </accessExecLink-->
         
         <useUpdateLink>
 			<pattern><![CDATA[CAST_WRITE_ACCESS ]]></pattern>
@@ -167,7 +200,7 @@
 
  	
 		<callLink>
-			<pattern><![CDATA[USES-PROGRAM[ \t]*]]></pattern>
+			<pattern><![CDATA[USES-PROGRAM[ \t]+]]></pattern>
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
 		</callLink>
 
@@ -177,25 +210,30 @@
 		</callProgLink>
 		
         <referLink>
-			<pattern><![CDATA[FOR[ \t]+FIRST[ \t]+[0-9]*[ \t]+]]></pattern>
+			<pattern><![CDATA[^[ \t]+FOR[ \t]+(THE)*[ \t]*(FIRST|EACH)*[ \t]*[0-9]*[ \t]*]]></pattern>
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
 		</referLink>
 
 
-        <referLink>
-			<pattern><![CDATA[FOR[ \t]+FIRST[ \t]+[0-9]*[ \t]+]]></pattern>
+        <!--referLink>
+			<pattern><![CDATA[FOR[ \t]+[T]*[H]*[E]*[ \t]*FIRST[ \t]+[0-9]*[ \t]*]]></pattern>
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
-		</referLink>
+		</referLink-->
+
+        <!--referLink>
+			<pattern><![CDATA[^[[:blank:]]+FOR\s+[0-9]*[ \t]*]]></pattern>
+			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
+		</referLink-->
 
 
-        <referLink>
+        <!--referLink>
 			<pattern><![CDATA[FOR[ \t]+EACH[ \t]+]]></pattern>
-			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
-		</referLink>
+			<callee><![CDATA[([A-Za-z0-9#$@_\-]+)+]]></callee>
+		</referLink-->
 
         <useInsertLink>
-			<pattern><![CDATA[FOR[ \t]+NEW[ \t]+]]></pattern>
-			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
+			<pattern><![CDATA[^[[:blank:]]+FOR[ \t]+NEW[ \t]+]]></pattern>
+			<callee><![CDATA[[A-Za-z0-9#$@_\-]+]]></callee>
 		</useInsertLink>
 		
         <!--referLink>
@@ -219,6 +257,12 @@
              <pattern><![CDATA[[ \t]*DO[ \t]+]]></pattern>
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
         </accessExecLink>
+
+        <accessExecLink>
+             <pattern><![CDATA[[ \t]*PROCESS[ \t]+NEXT[ \t]+[ \t]+]]></pattern>
+			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
+        </accessExecLink>
+
 
 	</links>
 
