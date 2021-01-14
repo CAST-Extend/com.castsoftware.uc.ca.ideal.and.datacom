@@ -177,13 +177,13 @@
 		</callProgLink>
 		
         <referLink>
-			<pattern><![CDATA[FOR[ \t]+THE[ \t]+FIRST[ \t]+]]></pattern>
+			<pattern><![CDATA[FOR[ \t]+FIRST[ \t]+[0-9]*[ \t]+]]></pattern>
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
 		</referLink>
 
 
         <referLink>
-			<pattern><![CDATA[FOR[ \t]+FIRST[ \t]+]]></pattern>
+			<pattern><![CDATA[FOR[ \t]+FIRST[ \t]+[0-9]*[ \t]+]]></pattern>
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
 		</referLink>
 
