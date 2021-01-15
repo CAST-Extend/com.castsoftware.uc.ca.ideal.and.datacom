@@ -27,6 +27,8 @@
    <keyword>ASCENDING</keyword>
    <keyword>DESCENDING</keyword>
    <keyword>WHEN</keyword>
+   <keyword>NEXT</keyword>
+   <keyword>PROCESS</keyword>
    <keyword>NONE</keyword>
    <keyword>ERROR</keyword>
    <keyword>ENDFOR</keyword>
@@ -120,9 +122,6 @@
 			
 		</ideal_procedure>
 		
-	
-	
-		
 		<ideal_panel>
 			<header>
 					<pattern><![CDATA[->PANEL]]></pattern>
@@ -138,7 +137,7 @@
 			</body>
 			
 		</ideal_panel>
-		
+        
 		<ideal_report>
 			<header>
 					<pattern><![CDATA[->REPORT]]></pattern>
@@ -258,10 +257,12 @@
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
         </accessExecLink>
 
-        <accessExecLink>
+        <!--Since IDEAL Sub procedure cannot be created since PROCEDURE and SUB PROCEDURE Ending is same, PROCESS NEXT COMMAND Is not supported.-->
+        
+        <!--accessExecLink>
              <pattern><![CDATA[[ \t]*PROCESS[ \t]+NEXT[ \t]+[ \t]+]]></pattern>
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
-        </accessExecLink>
+        </accessExecLink-->
 
 
 	</links>
