@@ -40,6 +40,7 @@ class CobolToIdeal(ApplicationLevelExtension):
         logging.info("****** Number of CA IDEAL Programs {}".format(str(len(ideal_program_list))))
         
         logging.info("****** Creating Link between Unknown Cobol Program and Ideal Program")
+        
         # matching by name : if CAST_COBOL_ProgramPrototype has same name as PLIMainProcedure, they are the same object
         for ideal_program in ideal_program_list:
             for cobol_unknown in cobol_unknown_list:
@@ -53,7 +54,7 @@ class CobolToIdeal(ApplicationLevelExtension):
             for cobol_known in application.objects().has_type('CAST_COBOL_SavedProgram'):
                 cobol_known_list[cobol_known.get_name()] = cobol_known
                 logging.debug("Cobol CAST_COBOL_SavedProgram found: {}".format(cobol_known.get_name()))
-        except:
+        except KeyError:
             pass
         
             
@@ -63,7 +64,7 @@ class CobolToIdeal(ApplicationLevelExtension):
             for pli_main in application.objects().has_type('PLIMainProcedure'):
                 logging.info("PLIMainProcedure found: {}".format(pli_main.get_name()))
                 pli_main_list[pli_main.get_name()] = pli_main
-        except:
+        except KeyError:
             pass
 
         logging.info("****** Number of PLIMainProcedure {}".format(str(len(pli_main_list))))
@@ -73,7 +74,7 @@ class CobolToIdeal(ApplicationLevelExtension):
             for asm in application.objects().has_type('ASMZOSProgram'):
                 logging.info("ASMZOSProgram found: {}".format(asm.get_name()))
                 asm_list[asm.get_name()] = asm
-        except:
+        except KeyError:
             pass
 
 
@@ -101,7 +102,7 @@ class CobolToIdeal(ApplicationLevelExtension):
             ref = ReferenceFinder()
             references = []
 
-            ref.add_pattern('CommentedLine', before='', element ="^\:", after='') 
+            ref.add_pattern('CommentedLine', before='', element ="^(\:|\#)", after='') 
             ref.add_pattern('calltoprogram', before='', element ="^[\t ]+CALL+\s+([A-Za-z0-9#$@_\-]+)+\s+", after='') 
 
             try:
@@ -109,7 +110,7 @@ class CobolToIdeal(ApplicationLevelExtension):
             except FileNotFoundError:
                 logging.warning(" Wrong file or path" + str(o))  
             
-            #           logging.info("references is " + str(len(references)))
+            # logging.info("references is " + str(len(references)))
             non_ideal_program_name = ""
             caller_object = ""
             caller_bookmark = ""
@@ -137,7 +138,7 @@ class CobolToIdeal(ApplicationLevelExtension):
                                 link = ("callLink", caller_object, p1, caller_bookmark)
                                 if link not in links:
                                     links.append(link)
-                    except:
+                    except KeyError:
                         pass
                     
                     try:
@@ -148,7 +149,7 @@ class CobolToIdeal(ApplicationLevelExtension):
                                 link = ("callLink", caller_object, p1, caller_bookmark)
                                 if link not in links:
                                     links.append(link)
-                    except:
+                    except KeyError:
                         pass
                     
                     try:
@@ -159,7 +160,7 @@ class CobolToIdeal(ApplicationLevelExtension):
                                 link = ("callLink", caller_object, p1, caller_bookmark)
                                 if link not in links:
                                     links.append(link)
-                    except:
+                    except KeyError:
                         pass
 
                     caller_object = ""
