@@ -87,84 +87,100 @@ class CobolToIdeal(ApplicationLevelExtension):
         logging.info("****** Scan Ideal Programs for Calls to Cobol/PLI/ASM")
 
         try:
-            srcFiles = application.get_files(['ideal_program'])
+            srcFiles = application.get_files(['sourceFile'])
         except Exception:
             logging.error("Error Reading Source file ", str(Exception))
            
 
         for o in srcFiles:
-            logging.info(" File is " + str(o))
-    
-        #   check if file is analyzed source code, or if it generated (Unknown)
+            #logging.info(" File is " + str(o))
+            filepath = o.get_path()
+            
+            #   check if file is analyzed source code, or if it generated (Unknown)
             if not o.get_path():
-                continue
+                    continue
+                    
+            if filepath.endswith(".pgm"):
                 
-            ref = ReferenceFinder()
-            references = []
-
-            ref.add_pattern('CommentedLine', before='', element ="^(\:|\#)", after='') 
-            ref.add_pattern('calltoprogram', before='', element ="^[\t ]+CALL+\s+([A-Za-z0-9#$@_\-]+)+\s+", after='') 
-
-            try:
-                references += [reference for reference in ref.find_references_in_file(o)]
-            except FileNotFoundError:
-                logging.warning(" Wrong file or path" + str(o))  
-            
-            # logging.info("references is " + str(len(references)))
-            non_ideal_program_name = ""
-            caller_object = ""
-            caller_bookmark = ""
-            
-            for reference in references:
-                if reference.pattern_name=='CommentedLine':
-                    pass
-                elif reference.pattern_name=='calltoprogram':
-                    tot_name = reference.value.split()
-                    non_ideal_program_name = tot_name[1]
-                    logging.info("Probable Non ideal Program found is  " + str(non_ideal_program_name))
-                    caller_object = reference.object
-                    caller_bookmark = reference.bookmark
-            
-            
-                #                logging.info("caller_bookmark--> " + str(caller_bookmark))
-                #logging.info("caller_object--> " + str(caller_object))
-
-                if non_ideal_program_name != "":
-                    try:
-                        for keyvalue in pli_main_list.items():
-                            p0 = keyvalue[0]
-                            p1 = keyvalue[1]
-                            if p0.strip() == non_ideal_program_name.strip():
-                                link = ("callLink", caller_object, p1, caller_bookmark)
-                                if link not in links:
-                                    links.append(link)
-                    except KeyError:
+                ref = ReferenceFinder()
+                references = []
+    
+                ref.add_pattern('CommentedLine', before='', element ="^(\:|\#)", after='') 
+                ref.add_pattern('calltoprogram', before='', element ="^[\t ]+CALL+\s+([A-Za-z0-9#$@_\-]+)+\s+", after='') 
+    
+                try:
+                    references += [reference for reference in ref.find_references_in_file(o)]
+                except FileNotFoundError:
+                    logging.warning(" Wrong file or path" + str(o))  
+                
+                # logging.info("references is " + str(len(references)))
+                non_ideal_program_name = ""
+                caller_object = ""
+                caller_bookmark = ""
+                reference_bookmark_str = ""
+                reference_line_num = ""
+                reference_bookmark_object = ""
+                
+                for reference in references:
+                    non_ideal_program_name = ""
+                    if reference.pattern_name=='CommentedLine':
                         pass
+                    elif reference.pattern_name=='calltoprogram':
+                        tot_name = reference.value.split()
+                        non_ideal_program_name = tot_name[1]
+                        logging.info("Probable Non ideal Program found is  " + str(non_ideal_program_name))
+
                     
-                    try:
-                        for keyvalue in cobol_known_list.items():
-                            p0 = keyvalue[0]
-                            p1 = keyvalue[1]
-                            if p0.strip() == non_ideal_program_name.strip():
-                                link = ("callLink", caller_object, p1, caller_bookmark)
-                                if link not in links:
-                                    links.append(link)
-                    except KeyError:
-                        pass
-                    
-                    try:
-                        for keyvalue in asm_list.items():
-                            p0 = keyvalue[0]
-                            p1 = keyvalue[1]
-                            if p0.strip() == non_ideal_program_name.strip():
-                                link = ("callLink", caller_object, p1, caller_bookmark)
-                                if link not in links:
-                                    links.append(link)
-                    except KeyError:
-                        pass
+                    if non_ideal_program_name != "":
+                        try:
+                            for keyvalue in pli_main_list.items():
+                                p0 = keyvalue[0]
+                                p1 = keyvalue[1]
+                                if p0.strip() == non_ideal_program_name.strip():
+                                    caller_bookmark, caller_object = get_reference_data(reference, o)
+                                    if caller_bookmark != None:
+                                        link = ("callLink", caller_object, p1, caller_bookmark)
+                                    else:
+                                        link = ("callLink", caller_object, p1)
+                                    if link not in links:
+                                        links.append(link)
+                        except KeyError:
+                            pass
+                        
+                        try:
+                            for keyvalue in cobol_known_list.items():
+                                p0 = keyvalue[0]
+                                p1 = keyvalue[1]
+                                if p0.strip() == non_ideal_program_name.strip():
+                                    caller_bookmark, caller_object = get_reference_data(reference, o)
+                                    if caller_bookmark != None:
+                                        link = ("callLink", caller_object, p1, caller_bookmark)
+                                    else:
+                                        link = ("callLink", caller_object, p1)
 
-                    caller_object = ""
-                    caller_bookmark = ""
+                                    if link not in links:
+                                        links.append(link)
+                        except KeyError:
+                            pass
+                        
+                        try:
+                            for keyvalue in asm_list.items():
+                                p0 = keyvalue[0]
+                                p1 = keyvalue[1]
+                                if p0.strip() == non_ideal_program_name.strip():
+                                    caller_bookmark, caller_object = get_reference_data(reference, o)
+                                    if caller_bookmark != None:
+                                        link = ("callLink", caller_object, p1, caller_bookmark)
+                                    else:
+                                        link = ("callLink", caller_object, p1)
+
+                                    if link not in links:
+                                        links.append(link)
+                        except KeyError:
+                            pass
+                            
+                        caller_object = ""
+                        caller_bookmark = ""
         
         for link in links:
             logging.info("Link to be created is " + str(link))
@@ -172,4 +188,46 @@ class CobolToIdeal(ApplicationLevelExtension):
             nbLinkCreated += 1
                 
         logging.info("****** Number of created matchLink/callLink between ideal_program --> cobol/pli/asm : {}".format(str(nbLinkCreated)))
-  
+
+
+def find_most_specific_object(_file, linenum, columnnum, _type):
+    """
+    Find the most specific sub object containing line, column of a given type
+    """
+    
+    linenum = int(linenum)
+    columnnum = int(columnnum)
+        
+    result = _file
+    result_position = None
+
+    for sub_object in _file.load_objects():
+        for position in sub_object.get_positions():
+            #Bookmark(File(AG110BT2.pgm, sourceFile), 1, 1, 1538, 14)
+            bookmark_str = str(sub_object)
+            object_type = bookmark_str.split(",")[1].split(")")[0]
+            
+            if object_type.strip() == _type.strip():
+                if position.contains_position(linenum, columnnum) and (not result_position or result_position.contains(position)):
+                    result = sub_object
+                    result_position = position
+                    if result.get_type() == _type:
+                        return [result,result_position]
+    
+    return result, result_position
+
+def get_reference_data(reference,o):
+
+    caller_object = reference.object
+    caller_bookmark = reference.bookmark
+    reference_bookmark_str = str(caller_bookmark)
+    ###Bookmark(File(AG110BT2, ideal_program), 1281, 1, 1281, 18)
+    reference_bookmark_str = reference_bookmark_str.strip("Bookmark(")
+    reference_bookmark_str = reference_bookmark_str.rstrip(")")
+    reference_line_num = reference_bookmark_str.split("),")[1].split(",")[0]
+    ###Bookmark(file, begin_line, begin_column, end_line, end_column)
+                        
+    reference_bookmark_object = reference_bookmark_str.split("),")[0]  + str(")")
+    caller_object, caller_bookmark_new = find_most_specific_object(o, reference_line_num, 1, 'ideal_procedure')
+    
+    return caller_bookmark_new,  caller_object
