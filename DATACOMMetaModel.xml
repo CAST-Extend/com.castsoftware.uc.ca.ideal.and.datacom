@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<metaModel file_level="client" file_no="68">
+
+	<category name="APM DATACOM Module" rid="99">
+		<description>DATACOM</description>
+		<inheritedCategory name="APM Client Modules"/>
+	</category>
+
+	<category name="APM DATACOM Artifacts" rid="998">
+		<description>DATACOM Artifacts</description>
+		<inheritedCategory name="APM Client Language Artifacts"/>
+	</category>
+
+	<category name="DATACOM" rid="997">
+		<description>DATACOM</description>
+		<attribute name="extensions" stringValue="*.dba;*.dvw"/>
+		<inheritedCategory name="UniversalLanguage"/>
+		<inheritedCategory name="CsvLanguage"/>
+	</category>
+	
+	<type name="DATACOM_SUBSET" rid="996">
+		<description>DATACOM Subset</description>
+		<inheritedCategory name="PROJECT_SUBSET"/>
+		<inheritedCategory name="DATACOM"/>
+		<inheritedCategory name="APM DATACOM Module"/>
+	</type>
+	
+		<!-- PHP group -->
+	<type name="EnlightenDATACOM" rid="995">
+		<description>DATACOM</description>
+		<tree parent="EnlightenUniversalObjects" category="EnlightenTree"/>
+	</type>
+	
+	
+	<type name="DATACOM_project" rid="1">
+		<description>DATACOM Project</description>
+		<inheritedCategory name="UAProject"/>
+		<inheritedCategory name="DATACOM"/>
+		<inheritedCategory name="APM DATACOM Module"/>
+	</type>
+
+
+<type name="DATACOM_database" rid="10">
+		<description>DATACOM Database</description>	
+		<inheritedCategory name="UAObject"/>
+		<tree parent="useLink" category="CalleeLinkable"/>
+		<inheritedCategory name="METRICABLE"/>
+		<inheritedCategory name="DATACOM"/>
+		<inheritedCategory name="caseInsensitive"/>
+		<tree parent="sourceFile" category="amtParentship"/>
+		<tree parent="DATACOM_project" category="amtParentship"/>
+		<tree parent="EnlightenDATACOM" category="EnlightenTree"/>
+	</type>
+	
+	
+
+	
+		<type name="DATACOM_table" rid="12">
+		<description>DATACOM Table</description>	
+		<inheritedCategory name="UAObject"/>
+		<tree parent="useSelectLink" category="CalleeLinkable"/>
+		<inheritedCategory name="METRICABLE"/>
+		<inheritedCategory name="DATACOM"/>
+		<inheritedCategory name="APM DATACOM Artifacts"/>
+		<inheritedCategory name="APM Server objects"/>
+		<inheritedCategory name="APM SQL Artifacts"/>
+		<inheritedCategory name="caseInsensitive"/>
+		<tree parent="DATACOM_area" category="amtParentship"/>
+		<tree parent="EnlightenDATACOM" category="EnlightenTree"/>
+	</type>
+	
+	
+	
+	
+	
+			<type name="DATACOM_field" rid="14">
+		<description>DATACOM Field</description>	
+		<inheritedCategory name="UAObject"/>
+		<inheritedCategory name="METRICABLE"/>
+		<inheritedCategory name="DATACOM"/>
+		<inheritedCategory name="caseInsensitive"/>
+		<tree parent="DATACOM_key" category="amtParentship"/>
+		<tree parent="EnlightenDATACOM" category="EnlightenTree"/>
+	</type>	
+	
+	
+			<type name="DATACOM_key" rid="15">
+		<description>DATACOM Key</description>	
+		<inheritedCategory name="UAObject"/>
+		<tree parent="monitorLink" category="CalleeLinkable"/>
+		<inheritedCategory name="METRICABLE"/>
+		<inheritedCategory name="DATACOM"/>
+		<inheritedCategory name="APM DATACOM Artifacts"/>
+		<inheritedCategory name="APM Server objects"/>
+		<inheritedCategory name="APM SQL Artifacts"/>
+		<inheritedCategory name="caseInsensitive"/>
+		<tree parent="DATACOM_table" category="amtParentship"/>
+		<tree parent="EnlightenDATACOM" category="EnlightenTree"/>
+	</type>	
+	
+		<type name="DATACOM_area" rid="16">
+		<description>DATACOM Area</description>	
+		<inheritedCategory name="UAObject"/>
+		<inheritedCategory name="METRICABLE"/>
+		<inheritedCategory name="DATACOM"/>
+		<inheritedCategory name="APM DATACOM Artifacts"/>
+		<inheritedCategory name="APM Server objects"/>
+		<inheritedCategory name="APM SQL Artifacts"/>
+		<inheritedCategory name="caseInsensitive"/>
+		<inheritedCategory name="DATACOM_Properties"/>
+		<tree parent="DATACOM_database" category="amtParentship"/>
+		<tree parent="EnlightenDATACOM" category="EnlightenTree"/>
+	</type>	
+	
+	
+	
+	
+	
+	
+	<type name="DATACOM_dataview" rid="17">
+		<description>DATACOM DataView</description>	
+		<inheritedCategory name="UAObject"/>
+		<tree parent="accessLink" category="CallerLinkable"/>
+		<tree parent="accessLink" category="CalleeLinkable"/>
+		<tree parent="useSelectLink" category="CallerLinkable"/>
+		<tree parent="useSelectLink" category="CalleeLinkable"/>
+		<tree parent="useUpdateLink" category="CallerLinkable"/>
+		<tree parent="useUpdateLink" category="CalleeLinkable"/>
+		<tree parent="useDeleteLink" category="CallerLinkable"/>
+		<tree parent="useDeleteLink" category="CalleeLinkable"/>	
+		<tree parent="referLink" category="CallerLinkable"/>
+		<tree parent="referLink" category="CalleeLinkable"/>
+		<tree parent="useInsertLink" category="CallerLinkable"/>
+		<tree parent="useInsertLink" category="CalleeLinkable"/>
+		<tree parent="accessReadLink" category="CallerLinkable"/>
+		<tree parent="accessReadLink" category="CalleeLinkable"/>
+		<tree parent="accessWriteLink" category="CallerLinkable"/>	
+		<tree parent="accessWriteLink" category="CalleeLinkable"/>	
+		<inheritedCategory name="METRICABLE"/>
+		<inheritedCategory name="DATACOM"/>
+		<inheritedCategory name="caseInsensitive"/>
+		<inheritedCategory name="DATACOM_Properties"/>
+		<tree parent="sourceFile" category="amtParentship"/>
+		<tree parent="DATACOM_project" category="amtParentship"/>
+		<tree parent="EnlightenDATACOM" category="EnlightenTree"/>
+	</type>
+	
+	
+	<category name="DATACOM_Properties" rid="100">
+		<description>DATACOM Properties</description>
+		
+		<!-- COMMON PROPERTIES -->
+		<property name="DATACOM_BlockSize" type="string" rid="101">
+			<description>DATACOM BlockSize</description>
+			<attribute name="ACCESS_APPVIEW" intValue="1"/>
+			<attribute name="ACCESS_CVS" intValue="1"/>
+			<attribute name="ACCESS_HTML" intValue="1"/>
+			<attribute name="INF_TYPE" intValue="13"/>
+			<attribute name="INF_SUB_TYPE" intValue="8000000"/>
+		</property>
+		
+		<property name="DATACOM_ViewUpdateable" type="string" rid="102">
+			<description>DATACOM ViewUpdateable</description>
+			<attribute name="ACCESS_APPVIEW" intValue="1"/>
+			<attribute name="ACCESS_CVS" intValue="1"/>
+			<attribute name="ACCESS_HTML" intValue="1"/>
+			<attribute name="INF_TYPE" intValue="13"/>
+			<attribute name="INF_SUB_TYPE" intValue="8000001"/>
+		</property>
+		
+		
+	</category>
+	
+</metaModel>
