@@ -1,5 +1,5 @@
 import cast_upgrade_1_6_5 # @UnusedImport
-from cast.application import ApplicationLevelExtension, create_link,ReferenceFinder
+from cast.application import ApplicationLevelExtension, create_link,ReferenceFinder, Bookmark
 import logging
 from builtins import len
 
@@ -210,7 +210,9 @@ def find_most_specific_object(_file, linenum, columnnum, _type):
             if object_type.strip() == _type.strip():
                 if position.contains_position(linenum, columnnum) and (not result_position or result_position.contains(position)):
                     result = sub_object
-                    result_position = position
+                    #result_position = position
+                    result_position = Bookmark(_file, linenum, columnnum, linenum+1, columnnum) 
+
                     if result.get_type() == _type:
                         return [result,result_position]
     
