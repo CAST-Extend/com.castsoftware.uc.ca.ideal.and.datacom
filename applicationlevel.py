@@ -13,11 +13,13 @@ class CobolToIdeal(ApplicationLevelExtension):
         ## 2. Link calls from Ideal to Cobol
         ## 3. Link calls from Ideal to PLI
         ## 4. Link calls from Ideal to ASM
+        ## 5. Link calls from JCL to IDEAL
         
         logging.info("Running code at the end of an application")
         cobol_unknown_list = []
         cobol_known_list = {}
         pli_main_list = {}
+        ideal_program_list_obj = {}
         asm_list = {}
         nbLinkCreated = 0
         ideal_program_list = []
@@ -38,7 +40,14 @@ class CobolToIdeal(ApplicationLevelExtension):
             logging.info("IDEAL Programs found: {}".format(ideal_program.get_name()))
             ideal_program_list.append(ideal_program)
         logging.info("****** Number of CA IDEAL Programs {}".format(str(len(ideal_program_list))))
-        
+
+        try:
+            for ideal_pgm in application.objects().has_type('ideal_program'):
+                logging.info("Ideal Programs found: {}".format(ideal_pgm.get_name()))
+                ideal_program_list_obj[ideal_pgm.get_name()] = ideal_pgm
+        except KeyError:
+            pass
+                
         logging.info("****** Creating Link between Unknown Cobol Program and Ideal Program")
         
         # matching by name : if CAST_COBOL_ProgramPrototype has same name as PLIMainProcedure, they are the same object
@@ -49,6 +58,7 @@ class CobolToIdeal(ApplicationLevelExtension):
                     link = ('matchLink', cobol_unknown, ideal_program)
                     links.append(link)
 
+       
         #2.  for cobol_unknown in application.search_objects(['CAST_COBOL_SavedProgram']):
         try:
             for cobol_known in application.objects().has_type('CAST_COBOL_SavedProgram'):
@@ -181,6 +191,41 @@ class CobolToIdeal(ApplicationLevelExtension):
                             
                         caller_object = ""
                         caller_bookmark = ""
+        
+        ## JCL to IDEAL Program Linking
+        ## ideal_program_list_obj
+        sysin_dataset_name = ""
+        idea_program_name_called = ""
+        jcl_dataset_caller_bookmark_list = {}
+        value_list = []
+        
+        for link2 in  application.links().load_positions().load_property(138568).has_caller(application.objects().has_type("CAST_JCL_Step")).has_callee(application.objects().has_type(['CAST_JCL_Dataset'])):
+            inf = link2.get_property(138568)
+            if inf == 'IDEAL.SYSIN':
+                sysin_dataset_name = link2.get_callee().get_name()
+                idea_program_name_called = sysin_dataset_name.split("(")[1].split(")")[0]
+                value_list = [idea_program_name_called,link2.get_positions()[0]]
+                jcl_dataset_caller_bookmark_list[link2.get_caller()] =  value_list
+
+        
+        for link in  application.links().load_positions().has_caller(application.objects().has_type("CAST_JCL_Step")).has_callee(application.objects().has_type(['CAST_JCL_UtilityProcedure','CAST_JCL_CatalogedProcedure','CAST_JCL_InstreamProcedure','CAST_JCL_ProcedurePrototype'])):
+            if link.get_callee().get_name() == 'IDLBATCH':
+                jcl_step_idlbatch_caller = link.get_caller()
+                for keyvalue in jcl_dataset_caller_bookmark_list.items():
+                    jcl_dataset_caller = keyvalue[0]
+                    jcl_dataset_bookmark_programname = keyvalue[1]
+                    ideal_program_name_in_jcldataset = jcl_dataset_bookmark_programname[0]
+                    jcl_dataset_bookmark = jcl_dataset_bookmark_programname[1]
+                    if jcl_dataset_caller == jcl_step_idlbatch_caller:
+                        #link2_pos = link2.get_positions()
+                        for keyvalue in ideal_program_list_obj.items():
+                            ideal_pgm = keyvalue[0]
+                            ideal_pgm_obj = keyvalue[1]
+                            if ideal_pgm == ideal_program_name_in_jcldataset:
+                                jcl_ideal_link = ("callLink", jcl_step_idlbatch_caller, ideal_pgm_obj, jcl_dataset_bookmark)
+                                if jcl_ideal_link not in links:
+                                    links.append(jcl_ideal_link)
+
         
         for link in links:
             logging.info("Link to be created is " + str(link))
