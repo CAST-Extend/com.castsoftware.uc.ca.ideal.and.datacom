@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<metaModel file_level="prepackaged" file_no="67">
+
+	<category name="APM IDEAL Module" rid="99">
+		<description>IDEAL</description>
+		<inheritedCategory name="APM Client Modules"/>
+	</category>
+
+	<category name="APM IDEAL Artifacts" rid="998">
+		<description>IDEAL Artifacts</description>
+		<inheritedCategory name="APM Client Language Artifacts"/>
+	</category>
+
+	<category name="IDEAL" rid="997">
+		<description>IDEAL</description>
+		<attribute name="extensions" stringValue="*.pgm;*.pnl;*.rpt"/>
+		<inheritedCategory name="UniversalLanguage"/>
+		<inheritedCategory name="CsvLanguage"/>
+	</category>
+	
+	<type name="IDEAL_SUBSET" rid="996">
+		<description>IDEAL Subset</description>
+		<inheritedCategory name="PROJECT_SUBSET"/>
+		<inheritedCategory name="IDEAL"/>
+		<inheritedCategory name="APM IDEAL Module"/>
+	</type>
+	
+	<type name="EnlightenIDEAL" rid="995">
+		<description>IDEAL</description>
+		<tree parent="EnlightenUniversalObjects" category="EnlightenTree"/>
+	</type>
+	
+	
+	<type name="ideal_project" rid="1">
+		<description>IDEAL Project</description>
+		<inheritedCategory name="UAProject"/>
+		<inheritedCategory name="IDEAL"/>
+		<inheritedCategory name="APM IDEAL Module"/>
+	</type>
+
+	<type name="ideal_program" rid="2">
+		<description>IDEAL Program</description>	
+		<inheritedCategory name="UAObject"/>
+		<inheritedCategory name="METRICABLE"/>
+		<inheritedCategory name="IDEAL"/>
+		<inheritedCategory name="APM Inventory Files"/>
+		<inheritedCategory name="APM Inventory Programs"/>
+		<inheritedCategory name="caseInsensitive"/>
+		<inheritedCategory name="IDEAL_Properties"/>
+		
+		<tree parent="callProgLink" category="CalleeLinkable"/>
+		<tree parent="callLink" category="CalleeLinkable"/>
+		<tree parent="callLink" category="CallerLinkable"/>
+		<tree parent="includeLink" category="CallerLinkable"/>
+		<tree parent="useSelectLink" category="CallerLinkable"/>
+		
+		<tree parent="sourceFile" category="amtParentship"/>
+		<tree parent="ideal_project" category="amtParentship"/>
+		<tree parent="EnlightenIDEAL" category="EnlightenTree"/>
+	</type>
+
+	<type name="ideal_procedure" rid="10">
+		<description>IDEAL Procedure</description>	
+		<inheritedCategory name="UAObject"/>
+		<inheritedCategory name="METRICABLE"/>
+		<inheritedCategory name="IDEAL"/>
+		<inheritedCategory name="APM IDEAL Artifacts"/>
+		<inheritedCategory name="APM Methods"/>
+		<inheritedCategory name="APM Inventory Methods"/>
+		<inheritedCategory name="caseInsensitive"/>
+		
+		<!--  CAST_USE_INDEX : Datacom Key (Index) usage detected by preprocessor -->
+		<tree parent="monitorLink" category="CallerLinkable"/>
+		
+		<!-- CALL PROGNAME : call a Program (Ideal Program).
+				call to COBOL program , ASM program or PLI program are managed differently, from IDEAL program Stub, LANGUAGE COBOL|ASM|PLI , with SDK end_application -->
+		<tree parent="callProgLink" category="CallerLinkable"/>
+		
+		<tree parent="referLink" category="CallerLinkable"/>
+		<tree parent="useInsertLink" category="CallerLinkable"/>
+		<tree parent="useUpdateLink" category="CallerLinkable"/>
+		<tree parent="useSelectLink" category="CallerLinkable"/>
+		
+		<!-- PRODUCE REPORT.SUBREC : write to a Report -->
+		<tree parent="accessWriteLink" category="CallerLinkable"/>
+		
+		<!-- DO procName : call an internal procedure -->
+		<tree parent="accessExecLink" category="CalleeLinkable"/>
+		<tree parent="accessExecLink" category="CallerLinkable"/>
+		
+		<tree parent="ideal_program" category="amtParentship"/>
+		<tree parent="ideal_project" category="amtParentship"/>
+		<tree parent="EnlightenIDEAL" category="EnlightenTree"/>
+	</type>
+	
+	
+	
+	
+	<type name="ideal_panel" rid="11">
+		<description>IDEAL Panel</description>	
+		<inheritedCategory name="UAObject"/>
+		<tree parent="includeLink" category="CalleeLinkable"/>
+		
+		<tree parent="sourceFile" category="amtParentship"/>
+		<tree parent="ideal_project" category="amtParentship"/>
+		<tree parent="EnlightenIDEAL" category="EnlightenTree"/>
+		<inheritedCategory name="METRICABLE"/>
+		<inheritedCategory name="IDEAL"/>
+		<inheritedCategory name="caseInsensitive"/>
+	</type>
+
+
+	<type name="ideal_report" rid="12">
+		<description>IDEAL Report</description>	
+		<inheritedCategory name="IDEAL"/>
+		<inheritedCategory name="ESQLSearchable"/>
+		<inheritedCategory name="caseInsensitive"/>
+		<inheritedCategory name="UAObject"/>
+		<inheritedCategory name="METRICABLE"/>
+		<inheritedCategory name="APM IDEAL Artifacts"/>
+        <tree parent="ideal_project" category="amtParentship"/>
+		<tree parent="sourceFile" category="amtParentship"/>
+		<tree parent="EnlightenIDEAL" category="EnlightenTree"/>
+		
+		<tree parent="includeLink" category="CalleeLinkable"/>
+		<tree parent="includeLink" category="CallerLinkable"/>
+        <tree parent="accessWriteLink" category="CalleeLinkable"/>
+	</type>
+	
+	
+	
+		<category name="IDEAL_Properties" rid="100">
+		<description>IDEAL Properties</description>
+		
+		<!-- COMMON PROPERTIES -->
+		<property name="IDEAL_LastUpdateDate" type="string" rid="101">
+			<description>IDEAL LastUpdateDate</description>
+			<attribute name="ACCESS_APPVIEW" intValue="1"/>
+			<attribute name="ACCESS_CVS" intValue="1"/>
+			<attribute name="ACCESS_HTML" intValue="1"/>
+			<attribute name="INF_TYPE" intValue="14"/>
+			<attribute name="INF_SUB_TYPE" intValue="8000000"/>
+		</property>
+		
+		<property name="IDEAL_LastUpdateBy" type="string" rid="102">
+			<description>IDEAL LastUpdateBy</description>
+			<attribute name="ACCESS_APPVIEW" intValue="1"/>
+			<attribute name="ACCESS_CVS" intValue="1"/>
+			<attribute name="ACCESS_HTML" intValue="1"/>
+			<attribute name="INF_TYPE" intValue="14"/>
+			<attribute name="INF_SUB_TYPE" intValue="8000001"/>
+		</property>
+		
+		<property name="IDEAL_CreationDate" type="string" rid="103">
+			<description>IDEAL CreationDate</description>
+			<attribute name="ACCESS_APPVIEW" intValue="1"/>
+			<attribute name="ACCESS_CVS" intValue="1"/>
+			<attribute name="ACCESS_HTML" intValue="1"/>
+			<attribute name="INF_TYPE" intValue="14"/>
+			<attribute name="INF_SUB_TYPE" intValue="8000002"/>
+		</property>
+		
+		<property name="IDEAL_CreationBy" type="string" rid="104">
+			<description>IDEAL CreationBy</description>
+			<attribute name="ACCESS_APPVIEW" intValue="1"/>
+			<attribute name="ACCESS_CVS" intValue="1"/>
+			<attribute name="ACCESS_HTML" intValue="1"/>
+			<attribute name="INF_TYPE" intValue="14"/>
+			<attribute name="INF_SUB_TYPE" intValue="8000003"/>
+		</property>
+		
+		<property name="IDEAL_LastCompileDate" type="string" rid="105">
+			<description>IDEAL LastCompileDate</description>
+			<attribute name="ACCESS_APPVIEW" intValue="1"/>
+			<attribute name="ACCESS_CVS" intValue="1"/>
+			<attribute name="ACCESS_HTML" intValue="1"/>
+			<attribute name="INF_TYPE" intValue="14"/>
+			<attribute name="INF_SUB_TYPE" intValue="8000004"/>
+		</property>
+		
+		
+		<property name="IDEAL_RunStatus" type="string" rid="106">
+			<description>IDEAL RunStatus</description>
+			<attribute name="ACCESS_APPVIEW" intValue="1"/>
+			<attribute name="ACCESS_CVS" intValue="1"/>
+			<attribute name="ACCESS_HTML" intValue="1"/>
+			<attribute name="INF_TYPE" intValue="14"/>
+			<attribute name="INF_SUB_TYPE" intValue="8000005"/>
+		</property>
+		
+		<property name="IDEAL_ShortDesc" type="string" rid="107">
+			<description>IDEAL ShortDesc</description>
+			<attribute name="ACCESS_APPVIEW" intValue="1"/>
+			<attribute name="ACCESS_CVS" intValue="1"/>
+			<attribute name="ACCESS_HTML" intValue="1"/>
+			<attribute name="INF_TYPE" intValue="14"/>
+			<attribute name="INF_SUB_TYPE" intValue="8000006"/>
+		</property>
+
+		<!-- Added for CALL PROGRAM of other techno : call to COBOL program , ASM program or PLI program from IDEAL program Stub, 
+      		LANGUAGE can be 1 of : IDEAL |COBOL | ASM | PLI  -->
+		<property name="IDEAL_Language" type="string" rid="108">
+			<description>IDEAL Language</description>
+			<attribute name="ACCESS_APPVIEW" intValue="1"/>
+			<attribute name="ACCESS_CVS" intValue="1"/>
+			<attribute name="ACCESS_HTML" intValue="1"/>
+			<attribute name="INF_TYPE" intValue="14"/>
+			<attribute name="INF_SUB_TYPE" intValue="8000007"/>
+		</property>
+		
+	</category>
+	
+
+</metaModel>
