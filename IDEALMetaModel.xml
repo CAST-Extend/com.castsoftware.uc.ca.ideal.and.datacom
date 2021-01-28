@@ -69,7 +69,6 @@
 		<inheritedCategory name="caseInsensitive"/>
 		<tree parent="monitorLink" category="CallerLinkable"/>
 		<tree parent="callProgLink" category="CallerLinkable"/>
-		<tree parent="callGotoLink" category="CalleeLinkable"/>
 		<tree parent="referLink" category="CallerLinkable"/>
 		<tree parent="useInsertLink" category="CallerLinkable"/>
 		<tree parent="useUpdateLink" category="CallerLinkable"/>
@@ -78,6 +77,7 @@
 		<tree parent="accessExecLink" category="CallerLinkable"/>
 		<tree parent="ideal_program" category="amtParentship"/>
 		<tree parent="ideal_project" category="amtParentship"/>
+		<tree parent="accessWriteLink" category="CallerLinkable"/>
 		<tree parent="EnlightenIDEAL" category="EnlightenTree"/>
 	</type>
 	
@@ -109,7 +109,6 @@
 		<tree parent="includeLink" category="CalleeLinkable"/>
 		<tree parent="includeLink" category="CallerLinkable"/>
         <tree parent="accessWriteLink" category="CalleeLinkable"/>
-		<tree parent="accessWriteLink" category="CallerLinkable"/>
 	</type>
 	
 		<category name="IDEAL_Properties" rid="100">
@@ -178,6 +177,17 @@
 			<attribute name="ACCESS_HTML" intValue="1"/>
 			<attribute name="INF_TYPE" intValue="14"/>
 			<attribute name="INF_SUB_TYPE" intValue="8000006"/>
+		</property>
+
+		<!-- Added for CALL PROGRAM of other techno : call to COBOL program , ASM program or PLI program from IDEAL program Stub, 
+      		LANGUAGE can be 1 of : IDEAL |COBOL | ASM | PLI  -->
+		<property name="IDEAL_Language" type="string" rid="108">
+			<description>IDEAL Language</description>
+			<attribute name="ACCESS_APPVIEW" intValue="1"/>
+			<attribute name="ACCESS_CVS" intValue="1"/>
+			<attribute name="ACCESS_HTML" intValue="1"/>
+			<attribute name="INF_TYPE" intValue="14"/>
+			<attribute name="INF_SUB_TYPE" intValue="8000007"/>
 		</property>
 		
 	</category>

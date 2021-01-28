@@ -60,7 +60,9 @@
 					<value><![CDATA[[\w_\$\@\.]+]]></value>
 			</identification.name>
 			
-		
+			<!-- Works sometimes... because not all properties are present 
+			ACTION = disable, because it is not used anywhere ASIS, and need to get the LANGUAGE property for lionking to COBOL and ASM.
+
 			<IDEAL_Properties.IDEAL_LastUpdateDate>
 						<pattern><![CDATA[ DATE-CREATED  ]]></pattern>
 						<value><![CDATA[[0-9][0-9][0-9][0-9][0-9][0-9]]]></value>
@@ -90,6 +92,21 @@
 						<pattern><![CDATA[RUN-STATUS ]]></pattern>
 						<value><![CDATA[[A-Z]+]]></value>
 					</IDEAL_Properties.IDEAL_RunStatus>
+					
+					-->
+			
+			
+			<!-- Added for CALL PROGRAM of other techno : call to COBOL program , ASM program or PLI program from IDEAL program Stub, 
+      		LANGUAGE can be 1 of : IDEAL |COBOL | ASM | PLI  
+			samples : 
+				  LANGUAGE COBOL       
+				  LANGUAGE ASM                
+				  LANGUAGE IDEAL       
+				  LANGUAGE PLI              -->
+			<IDEAL_Properties.IDEAL_Language>
+				<pattern><![CDATA[LANGUAGE ]]></pattern>
+				<value><![CDATA[[A-Z]+]]></value>
+			</IDEAL_Properties.IDEAL_Language>			
 					
 					<IDEAL_Properties.IDEAL_ShortDesc>
 						<pattern><![CDATA[SHORT\-DESC ']]></pattern>
@@ -165,11 +182,6 @@
          <callee><![CDATA[([\w]+)+]]></callee>
 		</accessWriteLink>
 
-        <!--accessExecLink>
-             <pattern><![CDATA[[ \t]*QUIT[ \t]+]]></pattern>
-			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
-        </accessExecLink-->
-        
         <useUpdateLink>
 			<pattern><![CDATA[CAST_WRITE_ACCESS ]]></pattern>
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
@@ -191,17 +203,17 @@
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
 		</includeLink>
 	
-	
+		<!--  Not wanted anymore : this is a declaration, not an actual call.
 		<!--referLink>
 			<pattern><![CDATA[USES-DATAVIEW[ \t]*]]></pattern>
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
 		</referLink-->
 
  	
-		<callLink>
+		<!--callLink>
 			<pattern><![CDATA[USES-PROGRAM[ \t]+]]></pattern>
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
-		</callLink>
+		</callLink-->
 
 		<callProgLink>
 			<pattern><![CDATA[CALL[ \t]+]]></pattern>
