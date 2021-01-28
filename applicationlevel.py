@@ -102,6 +102,7 @@ class CobolToIdeal(ApplicationLevelExtension):
             logging.error("Error Reading Source file ", str(Exception))
            
 
+            
         for o in srcFiles:
             #logging.info(" File is " + str(o))
             filepath = o.get_path()
@@ -116,6 +117,7 @@ class CobolToIdeal(ApplicationLevelExtension):
                 references = []
     
                 ref.add_pattern('CommentedLine', before='', element ="^(\:|\#)", after='') 
+                ref.add_pattern('calltoprocedure', before='<<', element ="([\w_\[\]\.\-:_ &]+)", after='>>') 
                 ref.add_pattern('calltoprogram', before='', element ="^[\t ]+CALL+\s+([A-Za-z0-9#$@_\-]+)+\s+", after='') 
     
                 try:
@@ -130,11 +132,36 @@ class CobolToIdeal(ApplicationLevelExtension):
                 reference_bookmark_str = ""
                 reference_line_num = ""
                 reference_bookmark_object = ""
+                link_to_be_created = "Y"
                 
                 for reference in references:
                     non_ideal_program_name = ""
                     if reference.pattern_name=='CommentedLine':
                         pass
+                    elif reference.pattern_name == 'calltoprocedure':
+                        ### Create gotlink from Ideal program to 1st Ideal Procedure
+                        if link_to_be_created == "Y":
+                            link_to_be_created = "N"
+                            first_procname = reference.value.split(">>")[0].strip("<<")
+                            caller_name = o.get_name().split(".")[0]
+                            #print(caller_name)
+                            caller_bookmark_str = str(reference.bookmark)
+                            caller_begin_line =  caller_bookmark_str.split(",")[2]
+                            caller_end_line =  caller_bookmark_str.split(",")[4]
+                            callee_object = reference.object
+                            for keyvalue in ideal_programs.items():
+                                p0 = keyvalue[0]
+                                p1 = keyvalue[1]
+                                #print(p0)
+                                #print(str(p1))
+                                if caller_name.strip() == p0.strip():
+                                    caller_object = p1
+                                    #caller_bookmark = Bookmark(caller_object, caller_begin_line,1,caller_end_line,1)
+                                    caller_bookmark, caller_object = get_reference_data(reference, o)
+                                    link = ("callGotoLink", p1, callee_object, caller_bookmark)
+                                    if link not in links:
+                                        links.append(link)
+                            
                     elif reference.pattern_name=='calltoprogram':
                         tot_name = reference.value.split()
                         non_ideal_program_name = tot_name[1]
@@ -227,6 +254,12 @@ class CobolToIdeal(ApplicationLevelExtension):
                                     links.append(jcl_ideal_link)
 
         
+        #for obj in  application.get_files(['ideal_program']):
+        #    for sub_object in obj.load_children():
+        #        sub_obj_type = sub_object.get_type()
+        #        if ideal_procedure == 'ideal_procedure':
+        #            print(" sub object is " + str(sub_object))
+                
         for link in links:
             logging.info("Link to be created is " + str(link))
             create_link(*link) 
