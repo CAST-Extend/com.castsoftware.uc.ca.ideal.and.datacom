@@ -69,6 +69,7 @@
 		<inheritedCategory name="caseInsensitive"/>
 		<tree parent="monitorLink" category="CallerLinkable"/>
 		<tree parent="callProgLink" category="CallerLinkable"/>
+		<tree parent="callGotoLink" category="CalleeLinkable"/>
 		<tree parent="referLink" category="CallerLinkable"/>
 		<tree parent="useInsertLink" category="CallerLinkable"/>
 		<tree parent="useUpdateLink" category="CallerLinkable"/>

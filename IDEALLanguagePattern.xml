@@ -57,7 +57,7 @@
 			</header>
 			<identification.name>
 					<pattern><![CDATA[->PROGRAM ]]></pattern>
-					<value><![CDATA[[a-zA-Z0-9_\$\@\.]+]]></value>
+					<value><![CDATA[[\w_\$\@\.]+]]></value>
 			</identification.name>
 			
 		
@@ -107,11 +107,11 @@
 		
 		<ideal_procedure>
 			<header>
-			<pattern><![CDATA[<<[a-zA-Z0-9_\[\]\.\-:_ &]+>>[ \t]+(PROC)*(EDURE)*[ ]]]></pattern>
+			<pattern><![CDATA[<<[\w_\[\]\.\-:_ &]+>>[ \t]+(PROC)*(EDURE)*]]></pattern>
 			</header>
 			<identification.name>
 			<pattern><![CDATA[<<]]></pattern>
-			<value><![CDATA[[a-zA-Z0-9_\[\]\.\-:_ &]*]]></value>
+			<value><![CDATA[[\w_\[\]\.\-:_ &]*]]></value>
 			</identification.name>
 			<body>
 			<begin><![CDATA[\r\n]]></begin>
@@ -128,7 +128,7 @@
 			</header>
 			<identification.name>
 					<pattern><![CDATA[->PANEL ]]></pattern>
-					<value><![CDATA[[a-zA-Z0-9_\$\@]+]]></value>
+					<value><![CDATA[[\w_\$\@]+]]></value>
 			</identification.name>
 			<body>
 					<begin><![CDATA[VERSION]]></begin>
@@ -144,7 +144,7 @@
 			</header>
 			<identification.name>
 					<pattern><![CDATA[->REPORT ]]></pattern>
-					<value><![CDATA[[a-zA-Z0-9_\$\@]+]]></value>
+					<value><![CDATA[[\w_\$\@]+]]></value>
 			</identification.name>
 			<body>
 					<begin><![CDATA[VERSION]]></begin>
@@ -162,7 +162,7 @@
 	
 		<accessWriteLink>
 				<pattern><![CDATA[[Pp][rR][oO][dD][uU][cC][eE]\s+]]></pattern>
-         <callee><![CDATA[([A-Za-z0-9]+)+]]></callee>
+         <callee><![CDATA[([\w]+)+]]></callee>
 		</accessWriteLink>
 
         <!--accessExecLink>
@@ -192,10 +192,10 @@
 		</includeLink>
 	
 	
-		<referLink>
+		<!--referLink>
 			<pattern><![CDATA[USES-DATAVIEW[ \t]*]]></pattern>
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
-		</referLink>
+		</referLink-->
 
  	
 		<callLink>
@@ -227,22 +227,22 @@
 
         <!--referLink>
 			<pattern><![CDATA[FOR[ \t]+EACH[ \t]+]]></pattern>
-			<callee><![CDATA[([A-Za-z0-9#$@_\-]+)+]]></callee>
+			<callee><![CDATA[([\w#$@_\-]+)+]]></callee>
 		</referLink-->
 
         <useInsertLink>
 			<pattern><![CDATA[^[[:blank:]]+FOR[ \t]+NEW[ \t]+]]></pattern>
-			<callee><![CDATA[[A-Za-z0-9#$@_\-]+]]></callee>
+			<callee><![CDATA[[\w#$@_\-]+]]></callee>
 		</useInsertLink>
 		
         <!--referLink>
-			<pattern><![CDATA[FOR[ \t]+[T]*[H]*[E]*[ \t]+(FIRST)[a-zA-Z0-9 -]*[ \t]+]]></pattern>
+			<pattern><![CDATA[FOR[ \t]+[T]*[H]*[E]*[ \t]+(FIRST)[\w -]*[ \t]+]]></pattern>
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
 		</referLink-->
 
 		
         <!--useInsertLink>
-			<pattern><![CDATA[FOR[ \t]+[T]*[H]*[E]*[ \t]+(NEW)[a-zA-Z0-9 -]*[ \t]+]]></pattern>
+			<pattern><![CDATA[FOR[ \t]+[T]*[H]*[E]*[ \t]+(NEW)[\w -]*[ \t]+]]></pattern>
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
 		</useInsertLink-->
 
