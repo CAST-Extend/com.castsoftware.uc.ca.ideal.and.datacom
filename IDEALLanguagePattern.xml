@@ -202,18 +202,6 @@
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
 		</includeLink>
 	
-		<!--  Not wanted anymore : this is a declaration, not an actual call.
-		<!--referLink>
-			<pattern><![CDATA[USES-DATAVIEW[ \t]*]]></pattern>
-			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
-		</referLink-->
-
- 	
-		<!--callLink>
-			<pattern><![CDATA[USES-PROGRAM[ \t]+]]></pattern>
-			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
-		</callLink-->
-
 		<callProgLink>
 			<pattern><![CDATA[CALL[ \t]+]]></pattern>
 			<callee><![CDATA[[[:word:]#$@_\-]+]]></callee>
