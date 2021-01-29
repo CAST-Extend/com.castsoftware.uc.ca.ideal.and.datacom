@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<metaModel file_level="client" file_no="68">
+<metaModel file_level="prepackaged" file_no="68">
 
 	<category name="APM DATACOM Module" rid="99">
 		<description>DATACOM</description>
@@ -121,22 +121,14 @@
 	<type name="DATACOM_dataview" rid="17">
 		<description>DATACOM DataView</description>	
 		<inheritedCategory name="UAObject"/>
-		<tree parent="accessLink" category="CallerLinkable"/>
-		<tree parent="accessLink" category="CalleeLinkable"/>
 		<tree parent="useSelectLink" category="CallerLinkable"/>
-		<tree parent="useSelectLink" category="CalleeLinkable"/>
-		<tree parent="useUpdateLink" category="CallerLinkable"/>
-		<tree parent="useUpdateLink" category="CalleeLinkable"/>
-		<tree parent="useDeleteLink" category="CallerLinkable"/>
-		<tree parent="useDeleteLink" category="CalleeLinkable"/>	
-		<tree parent="referLink" category="CallerLinkable"/>
 		<tree parent="referLink" category="CalleeLinkable"/>
-		<tree parent="useInsertLink" category="CallerLinkable"/>
 		<tree parent="useInsertLink" category="CalleeLinkable"/>
-		<tree parent="accessReadLink" category="CallerLinkable"/>
+		<tree parent="useSelectLink" category="CalleeLinkable"/>
+		<tree parent="useUpdateLink" category="CalleeLinkable"/>
 		<tree parent="accessReadLink" category="CalleeLinkable"/>
-		<tree parent="accessWriteLink" category="CallerLinkable"/>	
 		<tree parent="accessWriteLink" category="CalleeLinkable"/>	
+        <inheritedCategory name="APM IFPUG Data Function" />
 		<inheritedCategory name="METRICABLE"/>
 		<inheritedCategory name="DATACOM"/>
 		<inheritedCategory name="caseInsensitive"/>
@@ -169,7 +161,25 @@
 			<attribute name="INF_SUB_TYPE" intValue="8000001"/>
 		</property>
 		
-		
 	</category>
+	<type name="DATACOM_UnknownDataview" rid="18">
+		<description>Undefined DATACOM DataView</description>	
+		<inheritedCategory name="UAObject"/>
+		<tree parent="useSelectLink" category="CallerLinkable"/>
+		<tree parent="referLink" category="CalleeLinkable"/>
+		<tree parent="useInsertLink" category="CalleeLinkable"/>
+		<tree parent="useSelectLink" category="CalleeLinkable"/>
+		<tree parent="useUpdateLink" category="CalleeLinkable"/>
+		<tree parent="accessReadLink" category="CalleeLinkable"/>
+		<tree parent="accessWriteLink" category="CalleeLinkable"/>	
+        <inheritedCategory name="APM IFPUG Data Function" />
+		<inheritedCategory name="METRICABLE"/>
+		<inheritedCategory name="DATACOM"/>
+		<inheritedCategory name="caseInsensitive"/>
+		<inheritedCategory name="DATACOM_Properties"/>
+		<tree parent="sourceFile" category="amtParentship"/>
+		<tree parent="DATACOM_project" category="amtParentship"/>
+		<tree parent="EnlightenDATACOM" category="EnlightenTree"/>
+	</type>
 	
 </metaModel>
