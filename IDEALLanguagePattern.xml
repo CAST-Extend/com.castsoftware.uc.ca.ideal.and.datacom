@@ -91,9 +91,8 @@
 				<IDEAL_Properties.IDEAL_RunStatus>
 						<pattern><![CDATA[RUN-STATUS ]]></pattern>
 						<value><![CDATA[[A-Z]+]]></value>
-					</IDEAL_Properties.IDEAL_RunStatus>
+					</IDEAL_Properties.IDEAL_RunStatus-->
 					
-					-->
 			
 			
 			<!-- Added for CALL PROGRAM of other techno : call to COBOL program , ASM program or PLI program from IDEAL program Stub, 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="iso-8859-1" ?>
 
 <metaModel file_level="prepackaged" file_no="68">
 
@@ -26,7 +26,7 @@
 		<inheritedCategory name="APM DATACOM Module"/>
 	</type>
 	
-		<!-- PHP group -->
+		<!-- DATACOM group -->
 	<type name="EnlightenDATACOM" rid="995">
 		<description>DATACOM</description>
 		<tree parent="EnlightenUniversalObjects" category="EnlightenTree"/>
@@ -41,7 +41,7 @@
 	</type>
 
 
-<type name="DATACOM_database" rid="10">
+	<type name="DATACOM_database" rid="10">
 		<description>DATACOM Database</description>	
 		<inheritedCategory name="UAObject"/>
 		<tree parent="useLink" category="CalleeLinkable"/>
@@ -52,40 +52,35 @@
 		<tree parent="DATACOM_project" category="amtParentship"/>
 		<tree parent="EnlightenDATACOM" category="EnlightenTree"/>
 	</type>
-	
-	
 
-	
-		<type name="DATACOM_table" rid="12">
+	<type name="DATACOM_table" rid="12">
 		<description>DATACOM Table</description>	
 		<inheritedCategory name="UAObject"/>
-		<tree parent="useSelectLink" category="CalleeLinkable"/>
+		<tree parent="useSelectLink" category="CallerLinkable"/>
 		<inheritedCategory name="METRICABLE"/>
 		<inheritedCategory name="DATACOM"/>
-		<inheritedCategory name="APM DATACOM Artifacts"/>
-		<inheritedCategory name="APM Server objects"/>
-		<inheritedCategory name="APM SQL Artifacts"/>
 		<inheritedCategory name="caseInsensitive"/>
-		<tree parent="DATACOM_area" category="amtParentship"/>
+		<inheritedCategory name="DATACOM_Properties"/>
+		<tree parent="sourceFile" category="amtParentship"/>
+		<tree parent="DATACOM_project" category="amtParentship"/>
 		<tree parent="EnlightenDATACOM" category="EnlightenTree"/>
 	</type>
 	
-	
-	
-	
-	
-			<type name="DATACOM_field" rid="14">
+
+
+	<type name="DATACOM_field" rid="14">
 		<description>DATACOM Field</description>	
 		<inheritedCategory name="UAObject"/>
 		<inheritedCategory name="METRICABLE"/>
 		<inheritedCategory name="DATACOM"/>
 		<inheritedCategory name="caseInsensitive"/>
-		<tree parent="DATACOM_key" category="amtParentship"/>
+		<tree parent="DATACOM_table" category="amtParentship"/>
 		<tree parent="EnlightenDATACOM" category="EnlightenTree"/>
 	</type>	
 	
+
 	
-			<type name="DATACOM_key" rid="15">
+	<type name="DATACOM_key" rid="15">
 		<description>DATACOM Key</description>	
 		<inheritedCategory name="UAObject"/>
 		<tree parent="monitorLink" category="CalleeLinkable"/>
@@ -97,9 +92,10 @@
 		<inheritedCategory name="caseInsensitive"/>
 		<tree parent="DATACOM_table" category="amtParentship"/>
 		<tree parent="EnlightenDATACOM" category="EnlightenTree"/>
-	</type>	
+	</type>			
 	
-		<type name="DATACOM_area" rid="16">
+
+	<type name="DATACOM_area" rid="16">
 		<description>DATACOM Area</description>	
 		<inheritedCategory name="UAObject"/>
 		<inheritedCategory name="METRICABLE"/>
@@ -112,10 +108,6 @@
 		<tree parent="DATACOM_database" category="amtParentship"/>
 		<tree parent="EnlightenDATACOM" category="EnlightenTree"/>
 	</type>	
-	
-	
-	
-	
 	
 	
 	<type name="DATACOM_dataview" rid="17">
@@ -137,6 +129,8 @@
 		<tree parent="DATACOM_project" category="amtParentship"/>
 		<tree parent="EnlightenDATACOM" category="EnlightenTree"/>
 	</type>
+
+
 	
 	
 	<category name="DATACOM_Properties" rid="100">
@@ -160,7 +154,7 @@
 			<attribute name="INF_TYPE" intValue="13"/>
 			<attribute name="INF_SUB_TYPE" intValue="8000001"/>
 		</property>
-		
+
 	</category>
 	<type name="DATACOM_UnknownDataview" rid="18">
 		<description>Undefined DATACOM DataView</description>	

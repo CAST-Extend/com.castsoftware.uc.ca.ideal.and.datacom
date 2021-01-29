@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<InformationTracking id="DATACOM">
+	<searchLinksInString>false</searchLinksInString>
+		
+		<sourceFileLinkSearchDeactivation>
+			<caller>
+				<genericLinks/>
+				<link>useLink</link>
+				<link>referLink</link>
+				<link>matchLink</link>
+				<link>fireSelectLink</link>
+				<link>mentionLink</link>
+				<link>relyonLink</link>
+				<link>callGotoLink</link>
+				<link>referCascadeLink</link>
+				<link>fireLink</link>
+				<link>joinLink</link>
+				<link>containLink</link>
+				<link>inheritExtendLink</link>
+				<link>accessExecLink</link>
+				<link>accessOpenLink</link>
+				<link>monitorSelectLink</link>
+				<link>monitorInsteadOfLink</link>
+				<!--<link>accessReadLink</link>
+				<link>accessWriteLink</link>-->
+				<link>gothroughLink</link>
+				<link>fireAfterLink</link>
+				<link>callTransacLink</link>
+				<link>includeLink</link>
+			</caller>
+			<callee>
+				<genericLinks/>
+				<link>useLink</link>
+				<link>referLink</link>
+				<link>matchLink</link>
+				<link>fireSelectLink</link>
+				<link>mentionLink</link>
+				<link>relyonLink</link>
+				<link>callGotoLink</link>
+				<link>referCascadeLink</link>
+				<link>fireLink</link>
+				<link>joinLink</link>
+				<link>containLink</link>
+				<link>inheritExtendLink</link>
+				<link>accessExecLink</link>
+				<link>accessOpenLink</link>
+				<link>monitorSelectLink</link>
+				<link>monitorInsteadOfLink</link>
+				<!--<link>accessReadLink</link>
+				<link>accessWriteLink</link>-->
+				<link>gothroughLink</link>
+				<link>fireAfterLink</link>
+				<link>callTransacLink</link>
+				<link>includeLink</link>
+			</callee>
+		</sourceFileLinkSearchDeactivation>
+		
+	
+</InformationTracking>

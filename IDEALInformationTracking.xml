@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<InformationTracking id="IDEAL">
+		<searchLinksInString>false</searchLinksInString>
+		
+		<sourceFileLinkSearchDeactivation>
+			<caller>
+				<genericLinks/>
+			</caller>
+			<callee>
+				<genericLinks/>
+			</callee>
+		</sourceFileLinkSearchDeactivation>
+		
+		
+		<ideal_procedure>
+			<accessExecLink>
+				<scope>ideal_program</scope>
+			</accessExecLink>
+		</ideal_procedure>
+		
+		
+</InformationTracking>

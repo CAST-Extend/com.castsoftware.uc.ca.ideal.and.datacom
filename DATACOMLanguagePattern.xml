@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<languagePattern id="DATACOM">
+	
+	<escape><![CDATA[\]]></escape>
+	<comment>
+		<begin><![CDATA[1001]]></begin>
+		<end><![CDATA[\r\n]]></end>
+		<multiline>false</multiline>
+	</comment>	
+	
+	
+
+	<types>
+	
+	
+		<DATACOM_database>
+			<header>
+					<pattern><![CDATA[-BTG DATABASE]]></pattern>
+			</header>
+			<identification.name>
+					<pattern><![CDATA[-BTG DATABASE,]]></pattern>
+					<value><![CDATA[[a-zA-Z0-9_\-]+]]></value>
+			</identification.name>
+			<body>
+					<begin><![CDATA[\(]]></begin>
+					<end><![CDATA[-END DATABASE]]></end>		
+					<nested>false</nested>
+			</body>
+			
+		</DATACOM_database>
+		
+	
+		
+		
+		<DATACOM_area>
+			<header>
+					<pattern><![CDATA[-BTG AREA]]></pattern>
+			</header>
+			<identification.name>
+					<pattern><![CDATA[-BTG AREA,]]></pattern>
+					<value><![CDATA[[a-zA-Z0-9_\-]+]]></value>
+			</identification.name>
+			
+			<DATACOM_Properties.DATACOM_BlockSize>
+				<pattern><![CDATA[3002[a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ][a-zA-Z0-9 ]]]></pattern>
+				<value><![CDATA[[0-9]+]]></value>
+			</DATACOM_Properties.DATACOM_BlockSize>
+			
+			<DATACOM_Properties.DATACOM_ViewUpdateable>
+				<pattern><![CDATA[CAST_View_RW:]]></pattern>
+				<value><![CDATA[(YES|NO)]]></value>
+			</DATACOM_Properties.DATACOM_ViewUpdateable>
+			
+			
+			<body>
+					<begin><![CDATA[\(]]></begin>
+					<end><![CDATA[-END AREA]]></end>		
+					<nested>false</nested>
+			</body>
+			
+		</DATACOM_area>
+		
+		
+		
+		<!-- <DATACOM_table>
+			<header>
+					<pattern><![CDATA[-BTG TABLE]]></pattern>
+			</header>
+			<identification.name>
+					<pattern><![CDATA[-BTG TABLE,]]></pattern>
+					<value><![CDATA[[a-zA-Z0-9_\-]+]]></value>
+			</identification.name>
+			<body>
+					<begin><![CDATA[\(]]></begin>
+					<end><![CDATA[-END]]></end>		
+					<nested>false</nested>
+			</body>
+			
+		</DATACOM_table> -->
+		
+		
+		<DATACOM_key>
+			<header>
+					<pattern><![CDATA[-BTG KEY]]></pattern>
+			</header>
+			<identification.name>
+					<pattern><![CDATA[\r\n- ]]></pattern>
+					<value><![CDATA[[a-zA-Z0-9_\-\.]+]]></value>
+			</identification.name>
+			<body>
+					<begin><![CDATA[\(]]></begin>
+					<end><![CDATA[-END]]></end>		
+					<nested>false</nested>
+			</body>			
+		</DATACOM_key>
+	
+
+		<DATACOM_field>
+			<header>
+					<pattern><![CDATA[-BTG FIELD]]></pattern>
+			</header>
+			<identification.name>
+					<pattern><![CDATA[-BTG FIELD,]]></pattern>
+					<value><![CDATA[[a-zA-Z0-9_\-]+]]></value>
+			</identification.name>
+			<body>
+					<begin><![CDATA[\r\n]]></begin>
+					<end><![CDATA[\r\n]]></end>		
+					<nested>false</nested>
+			</body>			
+		</DATACOM_field>
+	
+	
+		
+		<!-- <DATACOM_field>
+			<header>
+					<pattern><![CDATA[5010]]></pattern>
+			</header>
+			<identification.name>
+					<pattern><![CDATA[5010 ADD[ \t]]]></pattern>
+					<value><![CDATA[[a-zA-Z0-9_-]+]]></value>
+			</identification.name>
+			<body>
+					<begin><![CDATA[[\r\n]]]></begin>
+					<end><![CDATA[\r\n]]></end>		
+					<nested>false</nested>
+			</body>
+			</DATACOM_field> -->
+		
+		
+	
+		
+		
+		
+		<DATACOM_table>
+			<header>
+					<pattern><![CDATA[-BTG TABLE]]></pattern>
+			</header>
+			<identification.name>
+					<pattern><![CDATA[-BTG TABLE,]]></pattern>
+					<value><![CDATA[[a-zA-Z0-9_\-]+]]></value>
+			</identification.name>
+			<body>
+					<begin><![CDATA[\(]]></begin>
+					<end><![CDATA[-ENDD]]></end>		
+					<nested>false</nested>
+			</body>
+		</DATACOM_table>
+	
+
+		<DATACOM_dataview>
+			<header>
+					<pattern><![CDATA[-BTG DATAVIEW]]></pattern>
+			</header>
+			<identification.name>
+					<pattern><![CDATA[-BTG DATAVIEW,]]></pattern>
+					<value><![CDATA[[a-zA-Z0-9_\-]+]]></value>
+			</identification.name>
+			<body>
+					<begin><![CDATA[\(]]></begin>
+					<end><![CDATA[-END DATAVIEW]]></end>		
+					<nested>false</nested>
+			</body>
+			
+		</DATACOM_dataview>
+	
+		
+		
+	</types>
+		
+		
+		<links>
+			<useSelectLink>
+			<pattern><![CDATA[-BTG ELEMENT,]]></pattern>
+			<callee><![CDATA[[[a-zA-Z0-9_\-]*]]></callee>
+		</useSelectLink>
+	</links>
+	
+
+
+</languagePattern>
