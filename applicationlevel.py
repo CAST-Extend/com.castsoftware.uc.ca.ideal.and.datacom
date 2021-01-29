@@ -165,7 +165,7 @@ class CobolToIdeal(ApplicationLevelExtension):
                     elif reference.pattern_name=='calltoprogram':
                         tot_name = reference.value.split()
                         non_ideal_program_name = tot_name[1]
-                        logging.info("Probable Non ideal Program found is  " + str(non_ideal_program_name))
+                        file_obj = str(o)
 
                     
                     if non_ideal_program_name != "":
@@ -230,13 +230,14 @@ class CobolToIdeal(ApplicationLevelExtension):
             inf = link2.get_property(138568)
             if inf == 'IDEAL.SYSIN':
                 sysin_dataset_name = link2.get_callee().get_name()
-                idea_program_name_called = sysin_dataset_name.split("(")[1].split(")")[0]
-                value_list = [idea_program_name_called,link2.get_positions()[0]]
-                jcl_dataset_caller_bookmark_list[link2.get_caller()] =  value_list
+                if "(" in sysin_dataset_name:
+                    idea_program_name_called = sysin_dataset_name.split("(")[1].split(")")[0]
+                    value_list = [idea_program_name_called,link2.get_positions()[0]]
+                    jcl_dataset_caller_bookmark_list[link2.get_caller()] =  value_list
 
         
         for link in  application.links().load_positions().has_caller(application.objects().has_type("CAST_JCL_Step")).has_callee(application.objects().has_type(['CAST_JCL_UtilityProcedure','CAST_JCL_CatalogedProcedure','CAST_JCL_InstreamProcedure','CAST_JCL_ProcedurePrototype'])):
-            if link.get_callee().get_name() == 'IDLBATCH':
+            if link.get_callee().get_name() == 'IDLBATCH' or link.get_callee().get_name() == 'IDBATCH':
                 jcl_step_idlbatch_caller = link.get_caller()
                 for keyvalue in jcl_dataset_caller_bookmark_list.items():
                     jcl_dataset_caller = keyvalue[0]
