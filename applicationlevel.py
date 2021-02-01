@@ -96,129 +96,48 @@ class CobolToIdeal(ApplicationLevelExtension):
 
         logging.info("****** Scan Ideal Programs for Calls to Cobol/PLI/ASM")
 
-        try:
-            srcFiles = application.get_files(['sourceFile'])
-        except Exception:
-            logging.error("Error Reading Source file ", str(Exception))
-           
-
-            
-        for o in srcFiles:
-            #logging.info(" File is " + str(o))
-            filepath = o.get_path()
-            
-            #   check if file is analyzed source code, or if it generated (Unknown)
-            if not o.get_path():
-                    continue
-                    
-            if filepath.endswith(".pgm"):
-                
-                ref = ReferenceFinder()
-                references = []
-    
-                ref.add_pattern('CommentedLine', before='', element ="^(\:|\#)", after='') 
-                ref.add_pattern('calltoprocedure', before='<<', element ="([\w_\[\]\.\-:_ &]+)", after='>>') 
-                ref.add_pattern('calltoprogram', before='', element ="^[\t ]+CALL+\s+([A-Za-z0-9#$@_\-]+)+\s+", after='') 
-    
-                try:
-                    references += [reference for reference in ref.find_references_in_file(o)]
-                except FileNotFoundError:
-                    logging.warning(" Wrong file or path" + str(o))  
-                
-                # logging.info("references is " + str(len(references)))
-                non_ideal_program_name = ""
-                caller_object = ""
-                caller_bookmark = ""
-                reference_bookmark_str = ""
-                reference_line_num = ""
-                reference_bookmark_object = ""
-                link_to_be_created = "Y"
-                
-                for reference in references:
-                    non_ideal_program_name = ""
-                    if reference.pattern_name=='CommentedLine':
+        # Create callink from Ideal Stub to ASM/PLI/COBOL 
+        for o in application.objects().has_type('ideal_program').load_property(1567108):                
+            try:
+                obj_prop = o.get_property(1567108)
+                ideal_stub_name = o.get_name()
+                if obj_prop.upper() == 'COBOL':
+                    try:
+                        for keyvalue in cobol_known_list.items():
+                            p0 = keyvalue[0]
+                            p1 = keyvalue[1]
+                            if p0.strip() == ideal_stub_name.strip():
+                                link = ("callLink", o, p1)
+                                if link not in links:
+                                    links.append(link)
+                    except KeyError:
                         pass
-                    elif reference.pattern_name == 'calltoprocedure':
-                        ### Create gotlink from Ideal program to 1st Ideal Procedure
-                        if link_to_be_created == "Y":
-                            link_to_be_created = "N"
-                            first_procname = reference.value.split(">>")[0].strip("<<")
-                            caller_name = o.get_name().split(".")[0]
-                            #print(caller_name)
-                            caller_bookmark_str = str(reference.bookmark)
-                            caller_begin_line =  caller_bookmark_str.split(",")[2]
-                            caller_end_line =  caller_bookmark_str.split(",")[4]
-                            callee_object = reference.object
-                            for keyvalue in ideal_programs.items():
-                                p0 = keyvalue[0]
-                                p1 = keyvalue[1]
-                                #print(p0)
-                                #print(str(p1))
-                                if caller_name.strip() == p0.strip():
-                                    caller_object = p1
-                                    #caller_bookmark = Bookmark(caller_object, caller_begin_line,1,caller_end_line,1)
-                                    caller_bookmark, caller_object = get_reference_data(reference, o)
-                                    link = ("callGotoLink", p1, callee_object, caller_bookmark)
-                                    if link not in links:
-                                        links.append(link)
-                            
-                    elif reference.pattern_name=='calltoprogram':
-                        tot_name = reference.value.split()
-                        non_ideal_program_name = tot_name[1]
-                        file_obj = str(o)
+                elif obj_prop.upper() == 'ASM':
+                    try:
+                        for keyvalue in asm_list.items():
+                            p0 = keyvalue[0]
+                            p1 = keyvalue[1]
+                            if p0.strip() == ideal_stub_name.strip():
+                                link = ("callLink", o, p1)
+                                if link not in links:
+                                    links.append(link)
+                    except KeyError:
+                        pass
+                elif obj_prop.upper() == 'PLI':
+                    try:
+                        for keyvalue in pli_main_list.items():
+                            p0 = keyvalue[0]
+                            p1 = keyvalue[1]
+                            if p0.strip() == ideal_stub_name.strip():
+                                link = ("callLink", o, p1)
+                                if link not in links:
+                                    links.append(link)
+                    except KeyError:
+                        pass
 
-                    
-                    if non_ideal_program_name != "":
-                        try:
-                            for keyvalue in pli_main_list.items():
-                                p0 = keyvalue[0]
-                                p1 = keyvalue[1]
-                                if p0.strip() == non_ideal_program_name.strip():
-                                    caller_bookmark, caller_object = get_reference_data(reference, o)
-                                    if caller_bookmark != None:
-                                        link = ("callLink", caller_object, p1, caller_bookmark)
-                                    else:
-                                        link = ("callLink", caller_object, p1)
-                                    if link not in links:
-                                        links.append(link)
-                        except KeyError:
-                            pass
-                        
-                        try:
-                            for keyvalue in cobol_known_list.items():
-                                p0 = keyvalue[0]
-                                p1 = keyvalue[1]
-                                if p0.strip() == non_ideal_program_name.strip():
-                                    caller_bookmark, caller_object = get_reference_data(reference, o)
-                                    if caller_bookmark != None:
-                                        link = ("callLink", caller_object, p1, caller_bookmark)
-                                    else:
-                                        link = ("callLink", caller_object, p1)
+            except:
+                pass
 
-                                    if link not in links:
-                                        links.append(link)
-                        except KeyError:
-                            pass
-                        
-                        try:
-                            for keyvalue in asm_list.items():
-                                p0 = keyvalue[0]
-                                p1 = keyvalue[1]
-                                if p0.strip() == non_ideal_program_name.strip():
-                                    caller_bookmark, caller_object = get_reference_data(reference, o)
-                                    if caller_bookmark != None:
-                                        link = ("callLink", caller_object, p1, caller_bookmark)
-                                    else:
-                                        link = ("callLink", caller_object, p1)
-
-                                    if link not in links:
-                                        links.append(link)
-                        except KeyError:
-                            pass
-                            
-                        caller_object = ""
-                        caller_bookmark = ""
-        
         ## JCL to IDEAL Program Linking
         ## ideal_program_list_obj
         sysin_dataset_name = ""
