@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Parameterization engine for Cobol Analyzer allows to define two categories of rules. First category of rules 
+allows to draw links from subprogram calls to other objects. Users can create rules for specific subprograms 
+and must specify:
+- the subprogram name to catch
+- how to find the target name in parameters sent to this subprogram
+- the target name to search for in the target category of objects
+- the link type to draw
+
+Example:
+Following Cobol code:
+       01 LAYER-REC.
+           05 CALLER     PIC X(8).
+           05 DATAPROC   PIC XXXX VALUE "AAAA".
+           05 DATATYP    PIC X VALUE "B".
+           05 TARGET-OBJ PIC X(8).
+...
+           MOVE "TARGET" TO TARGET-OBJ.
+...
+           CALL "SUBPROG" USING DATA-IN LAYER-REC RESPONSE.
+
+can be handled by the rule:
+    <trigger signature="SUBPROG">
+        <variables>
+            <variable id="Parm2" arg="2"/>
+            <variable id="target" expression="Parm2(14:8)"/>
+        </variables>
+        <actions>
+            <addLink linkType="callLink" variable="target" filterCategory="CAST_COBOL_Program"/>
+        </actions>
+    </trigger>
+
+The variable "Parm2" gets the second parameter sent to the subprogram and the variable "target" gets the 
+offset starting at position 14 in "Parm2" for 8 characters. This variable is not always necessary if 
+the offset corresponds to the parameter. 
+
+The analyzer will search for object having the name found in the variable referenced in "variable" property 
+(ex: "target") and having the type mentioned in the "filterCategory" (ex: "callLink") of "addLink" tag. It 
+will draw a link corresponding to the type mentioned in the "linkType" property (ex: "CAST_COBOL_Program").
+
+Note: If the target object is not found by the analyzer, then this one will create a prototype that 
+will be used by the Linker. Then if the object is found, the Linker will draw a link to this object. 
+Otherwise, it will create an "unresolved object" and will draw a link to this one. This means that object 
+types that can be handle by the parameterization engine must be managed by the Linker (C/C++, dotNet). 
+There is an exception for SQL objects. In this specific case, the database must have been analyzed in a 
+previous job and resulting objects must have been selected in the Target Objects page of AnaMan. 
+If Management Studio is used, then the database analysis unit must be part of the application.
+
+Available categories are as follows:
+COBOL
+- CAST_COBOL_Program: Program
+
+CICS
+- CAST_CICS_Dataset : File
+- CAST_CICS_MapSet: Mapset
+- CAST_CICS_Map: Map
+- CAST_CICS_TDQueue: Transient Data
+- CAST_CICS_Transaction: Transaction
+
+JCL
+- CAST_JCL_Job: Job
+- CAST_JCL_Procedure: Procedure
+- CAST_JCL_Dataset: Dataset
+
+IMS
+- CAST_IMS_Database: Database definition (DBD)
+- CAST_IMS_Segment: Database segment
+- CAST_IMS_File: GSAM file
+- CAST_IMS_ProgramSpecificationBlock: Program Specification block (PSB)
+- CAST_IMS_ProgramControlBlock: Program control block (PCB)
+
+RDBMS
+- SQL_TABLE: Table
+- VIEW: View
+- SQL_PROC: Stored procedure
+- SQL_FUNCTION: Function
+
+Unsupported objects
+- CAST_Mainframe_NotHandledType: Allows to quickly draw a link to objects that are not supported in CAST
+
+Available link types are:
+- accessLink, accessExecLink, accessReadLink, accessWriteLink, accessOpenLink, accessCloseLink
+- callLink, callProgLink, callTransacLink
+- fireLink
+- matchLink
+- monitorLink, monitorBeforeLink, monitorAfterLink
+- prototypeLink
+- raiseLink
+- referLink
+- relyonLink
+- useLink, useDeleteLink, useInsertLink, useUpdateLink, useSelectLink
+
+Second category of rule allows to deactivate "Use" links drawn by grep on literals used by specific statements. Users can define rules 
+for specific statements and must specify:
+- the statement
+- the action to perform (forbidLink)
+
+Example:
+    <trigger signature="Statement.STRING">
+     <actions>
+        <forbidLink/>
+     </actions>
+    </trigger>
+-->
+
+
+<parameterization>
+
+<!-- Example: Call to another program via field
+       01 TARGET-OBJ PIC X(8).
+...
+           MOVE "TARGET1 " TO TARGET-OBJ.
+           CALL "SUBPROG1" USING DATA-IN TARGET-OBJ RESPONSE.
+
+    <trigger signature="SUBPROG1">
+        <variables>
+            <variable id="Parm2" arg="2"/>
+        </variables>
+        <actions>
+            <addLink linkType="callLink" variable="Parm2" filterCategory="CAST_COBOL_Program"/>
+        </actions>
+    </trigger>
+-->
+
+<!-- Example: Call to another program via a data structure
+       01 LAYER-REC.
+           05 CALLER     PIC X(8).
+           05 DATAPROC   PIC XXXX VALUE "AAAA".
+           05 DATATYP    PIC X VALUE "B".
+           05 TARGET-OBJ PIC X(8).
+...
+           MOVE "TARGET1 " TO TARGET-OBJ.
+           CALL "SUBPROG1" USING DATA-IN LAYER-REC RESPONSE.
+
+    <trigger signature="SUBPROG2">
+        <variables>
+            <variable id="Parm2" arg="2"/>
+            <variable id="target" expression="Parm2(14:8)"/>
+        </variables>
+        <actions>
+            <addLink linkType="callLink" variable="target" filterCategory="CAST_COBOL_Program"/>
+        </actions>
+    </trigger>
+-->
+
+<!-- Example: Access to relational database table
+       01 LAYER-REC2.
+           05 CALLER2     PIC X(8) VALUE "CALLER1".
+           05 DATAPROC2   PIC XXXX VALUE "AAAA".
+           05 DATATYP2    PIC X VALUE "B".
+           05 TARGET-OBJ2 PIC X(20).
+...
+           MOVE "V32_APTRSCLT" TO TARGET-OBJ2.
+           CALL "SUBPROG2" USING DATA-IN LAYER-REC2 RESPONSE.
+
+   <trigger signature="SUBPROG3">
+        <variables>
+            <variable id="Parm2" arg="2"/>
+            <variable id="target" expression="Parm2(14:20)"/>
+        </variables>
+        <actions>
+            <addLink linkType="useLink" variable="target" filterCategory="SQL_TABLE"/>
+        </actions>
+    </trigger>
+-->
+
+<!-- Example: SPITAB
+    CALL "SPI2T" USING PARM1 PARM2 PARM3
+    
+    <trigger signature="SPI2T">
+        <variables>
+            <variable id="Parm1" arg="1"/>
+            <variable id="TabName" expression="Parm1(3:8)"/>
+        </variables>
+        <actions>
+            <addLink linkType="accessLink" 
+                variable="TabName"
+                filterCategory="CAST_Mainframe_NotHandledType"/>
+        </actions>
+    </trigger>
+ -->
+ 
+<!-- Example: DATACOM 
+    CALL "DBNTRY" USING USER-ID
+                        F11-REQ-AREA
+                        F11F0
+                        F11-ELEMENT-LIST
+-->
+    
+    <trigger signature="DBNTRY">
+        <variables>
+            <variable id="Parm1" arg="2"/>
+            <variable id="FileName" expression="Parm1(6:3)"/>
+        </variables>
+        <actions>
+            <addLink linkType="useLink" 
+                variable="FileName"
+                filterCategory="CAST_Mainframe_NotHandledType"/>
+        </actions>
+       <variables>
+            <variable id="Parm2" arg="2"/>
+            <variable id="FileAction" expression="Parm1(1:5)"/>
+        </variables>
+        <actions>
+            <addLink linkType="useLink" 
+                variable="FileAction"
+                filterCategory="CAST_Mainframe_NotHandledType"/>
+        </actions>
+        </trigger>
+
+<!-- Example: MQSeries 
+    CALL "MQOPEN" USING PARM1 PARM2 PARM3
+    
+    <trigger signature="MQOPEN">
+        <variables>
+            <variable id="Parm" arg="xxxx"/>
+            <variable id="QueueName" expression="Parm(xxxx:48)"/>
+        </variables>
+        <actions>
+            <addLink linkType="useLink" 
+                variable="QueueName"
+                filterCategory="CAST_Mainframe_NotHandledType"/>
+        </actions>
+    </trigger>
+            dob="^((0?[13578]|10|12)(-|\/)(([1-9])|(0[1-9])|([12])([0-9]?)|(3[01]?))(-|\/)((19)([2-9])(\d{1})|(20)([01])(\d{1})|([8901])(\d{1}))|(0?[2469]|11)(-|\/)(([1-9])|(0[1-9])|([12])([0-9]?)|(3[0]?))(-|\/)((19)([2-9])(\d{1})|(20)([01])(\d{1})|([8901])(\d{1})))$" />
+
+-->
+
+<!-- List of statement to deactivate for "Use" links generated by GREP on literals -->
+    <trigger signature="DataDeclaration.VALUE">
+     <actions>
+        <forbidLink/>
+     </actions>
+    </trigger>
+
+    <trigger signature="Statement.DISPLAY">
+     <actions>
+        <forbidLink/>
+     </actions>
+    </trigger>
+
+<!--
+    <trigger signature="Statement.EVALUATE">
+     <actions>
+        <forbidLink/>
+     </actions>
+    </trigger> 
+-->
+
+<!--
+    <trigger signature="Statement.IF">
+     <actions>
+        <forbidLink/>
+     </actions>
+    </trigger> 
+-->
+
+    <trigger signature="Statement.INSPECT">
+     <actions>
+        <forbidLink/>
+     </actions>
+    </trigger>
+
+    <trigger signature="Statement.MOVE">
+     <actions>
+        <forbidLink/>
+     </actions>
+    </trigger>
+
+    <trigger signature="Statement.STOP">
+     <actions>
+        <forbidLink/>
+     </actions>
+    </trigger>
+
+    <trigger signature="Statement.STRING">
+     <actions>
+        <forbidLink/>
+     </actions>
+    </trigger>
+
+    <trigger signature="Statement.WHEN">
+     <actions>
+        <forbidLink/>
+     </actions>
+    </trigger>
+
+    <trigger signature="Statement.UNSTRING">
+     <actions>
+        <forbidLink/>
+     </actions>
+    </trigger>
+    
+    <trigger signature="Statement.COBOLHARDCODE">
+      <scope Data="No" Procedure="Yes"
+        username ="([B-DF-Z][A-Z0-9]|A[BNX]|E[A-Z])\d{5}|USRW[A-Z]{3,4}"
+        password="([B-DF-Z][A-Z0-9]|A[BNX]|E[A-Z])\d{5}|USRW[A-Z]{3,4}"
+        dob="(?:IF\s+WS00&#45;CICS&#45;IND\s+&lt;\s+&#39;C&#39;)+" />
+     <actions>
+          <addViolation/>
+     </actions>
+    </trigger>
+
+</parameterization>
