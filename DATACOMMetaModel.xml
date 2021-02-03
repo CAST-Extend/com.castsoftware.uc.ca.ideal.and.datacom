@@ -56,7 +56,11 @@
 	<type name="DATACOM_table" rid="12">
 		<description>DATACOM Table</description>	
 		<inheritedCategory name="UAObject"/>
-		<tree parent="useSelectLink" category="CallerLinkable"/>
+		<tree parent="accessLink" category="CalleeLinkable"/>
+		<tree parent="useInsertLink" category="CalleeLinkable"/>
+		<tree parent="useUpdateLink" category="CalleeLinkable"/>
+		<tree parent="accessReadLink" category="CalleeLinkable"/>
+		<tree parent="useDeleteLink" category="CalleeLinkable"/>	
 		<inheritedCategory name="METRICABLE"/>
 		<inheritedCategory name="DATACOM"/>
 		<inheritedCategory name="caseInsensitive"/>
@@ -115,11 +119,13 @@
 		<inheritedCategory name="UAObject"/>
 		<tree parent="useSelectLink" category="CallerLinkable"/>
 		<tree parent="referLink" category="CalleeLinkable"/>
+		<tree parent="accessLink" category="CalleeLinkable"/>
 		<tree parent="useInsertLink" category="CalleeLinkable"/>
 		<tree parent="useSelectLink" category="CalleeLinkable"/>
 		<tree parent="useUpdateLink" category="CalleeLinkable"/>
 		<tree parent="accessReadLink" category="CalleeLinkable"/>
 		<tree parent="accessWriteLink" category="CalleeLinkable"/>	
+		<tree parent="useDeleteLink" category="CalleeLinkable"/>	
         <inheritedCategory name="APM IFPUG Data Function" />
 		<inheritedCategory name="METRICABLE"/>
 		<inheritedCategory name="DATACOM"/>
@@ -153,6 +159,15 @@
 			<attribute name="ACCESS_HTML" intValue="1"/>
 			<attribute name="INF_TYPE" intValue="13"/>
 			<attribute name="INF_SUB_TYPE" intValue="8000001"/>
+		</property>
+
+        <property name="DATACOM_TableShortname" type="string" rid="103">
+			<description>DATACOM Table Short Names</description>
+			<attribute name="ACCESS_APPVIEW" intValue="1"/>
+			<attribute name="ACCESS_CVS" intValue="1"/>
+			<attribute name="ACCESS_HTML" intValue="1"/>
+			<attribute name="INF_TYPE" intValue="13"/>
+			<attribute name="INF_SUB_TYPE" intValue="8000002"/>
 		</property>
 
 	</category>

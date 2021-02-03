@@ -141,9 +141,14 @@
 					<pattern><![CDATA[-BTG TABLE,]]></pattern>
 					<value><![CDATA[[a-zA-Z0-9_\-]+]]></value>
 			</identification.name>
+			<DATACOM_Properties.DATACOM_TableShortname>
+				<pattern><![CDATA[3001\s+]]></pattern>
+				<value><![CDATA[[\w#]+]]></value>
+			</DATACOM_Properties.DATACOM_TableShortname>			
+					
 			<body>
 					<begin><![CDATA[\(]]></begin>
-					<end><![CDATA[-ENDD]]></end>		
+					<end><![CDATA[-END TABLE]]></end>		
 					<nested>false</nested>
 			</body>
 		</DATACOM_table>
