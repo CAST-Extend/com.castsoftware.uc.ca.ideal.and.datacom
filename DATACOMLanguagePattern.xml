@@ -142,8 +142,8 @@
 					<value><![CDATA[[a-zA-Z0-9_\-]+]]></value>
 			</identification.name>
 			<DATACOM_Properties.DATACOM_TableShortname>
-				<pattern><![CDATA[3001\s+]]></pattern>
-				<value><![CDATA[[\w#]+]]></value>
+				<pattern><![CDATA[3150 ]]></pattern>
+				<value><![CDATA[[a-zA-Z0-9_-]+]]></value>
 			</DATACOM_Properties.DATACOM_TableShortname>			
 					
 			<body>
