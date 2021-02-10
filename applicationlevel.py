@@ -24,7 +24,7 @@ class CobolToIdeal(ApplicationLevelExtension):
         nbLinkCreated = 0
         ideal_program_list = []
         ideal_programs = {}
-        links = []
+        new_links = []
 
         logging.info("****** Searching for CAST_COBOL_ProgramPrototype")
         #1.  for cobol_unknown in application.search_objects(['CAST_COBOL_ProgramPrototype']):
@@ -36,10 +36,11 @@ class CobolToIdeal(ApplicationLevelExtension):
         
         logging.info("****** Searching for ideal_program")
         ideal_program_list = []
-        for ideal_program in application.objects().has_type('ideal_program'):
-            logging.info("IDEAL Programs found: {}".format(ideal_program.get_name()))
-            ideal_program_list.append(ideal_program)
-        logging.info("****** Number of CA IDEAL Programs {}".format(str(len(ideal_program_list))))
+        
+        #for ideal_program in application.objects().has_type('ideal_program'):
+        #    logging.info("IDEAL Programs found: {}".format(ideal_program.get_name()))
+        #    ideal_program_list.append(ideal_program)
+        #logging.info("****** Number of CA IDEAL Programs {}".format(str(len(ideal_program_list))))
 
         try:
             for ideal_pgm in application.objects().has_type('ideal_program'):
@@ -51,12 +52,20 @@ class CobolToIdeal(ApplicationLevelExtension):
         logging.info("****** Creating Link between Unknown Cobol Program and Ideal Program")
         
         # matching by name : if CAST_COBOL_ProgramPrototype has same name as PLIMainProcedure, they are the same object
-        for ideal_program in ideal_program_list:
+        for keyvalue in ideal_program_list_obj.items():
+            ideal_pgm = keyvalue[0]
             for cobol_unknown in cobol_unknown_list:
                 if cobol_unknown.get_name() == ideal_program.get_name():
                     # we have a match
                     link = ('matchLink', cobol_unknown, ideal_program)
-                    links.append(link)
+                    new_links.append(link)
+       
+        #for ideal_program in ideal_program_list:
+        #    for cobol_unknown in cobol_unknown_list:
+        #        if cobol_unknown.get_name() == ideal_program.get_name():
+        #            # we have a match
+        #            link = ('matchLink', cobol_unknown, ideal_program)
+        #            new_links.append(link)
 
        
         #2.  for cobol_unknown in application.search_objects(['CAST_COBOL_SavedProgram']):
@@ -108,8 +117,8 @@ class CobolToIdeal(ApplicationLevelExtension):
                             p1 = keyvalue[1]
                             if p0.strip() == ideal_stub_name.strip():
                                 link = ("callLink", o, p1)
-                                if link not in links:
-                                    links.append(link)
+                                if link not in new_links:
+                                    new_links.append(link)
                     except KeyError:
                         pass
                 elif obj_prop.upper() == 'ASM':
@@ -119,8 +128,8 @@ class CobolToIdeal(ApplicationLevelExtension):
                             p1 = keyvalue[1]
                             if p0.strip() == ideal_stub_name.strip():
                                 link = ("callLink", o, p1)
-                                if link not in links:
-                                    links.append(link)
+                                if link not in new_links:
+                                    new_links.append(link)
                     except KeyError:
                         pass
                 elif obj_prop.upper() == 'PLI':
@@ -130,13 +139,82 @@ class CobolToIdeal(ApplicationLevelExtension):
                             p1 = keyvalue[1]
                             if p0.strip() == ideal_stub_name.strip():
                                 link = ("callLink", o, p1)
-                                if link not in links:
-                                    links.append(link)
+                                if link not in new_links:
+                                    new_links.append(link)
                     except KeyError:
                         pass
-
             except:
                 pass
+
+
+        ## Create CallLink from Ideal Program to 1st Procedure
+        
+        try:
+            srcFiles = application.get_files(['sourceFile'])
+        except Exception:
+            logging.error("Error Reading Source file ", str(Exception))
+           
+
+        #logging.info("ideal_programs.items() is  "  + str(ideal_programs.items()))  
+        for o in srcFiles:
+            #logging.info(" File is " + str(o))
+            filepath = o.get_path()
+            
+            #   check if file is analyzed source code, or if it generated (Unknown)
+            if not o.get_path():
+                    continue
+                    
+            if filepath.endswith(".pgm"):
+                
+                ref = ReferenceFinder()
+                references = []
+    
+                ref.add_pattern('CommentedLine', before='', element ="^(\:|\#)", after='') 
+                ref.add_pattern('calltoprocedure', before='<<', element ="([\w_\[\]\.\-:_ &]+)", after='>>') 
+    
+                try:
+                    references += [reference for reference in ref.find_references_in_file(o)]
+                except FileNotFoundError:
+                    logging.warning(" Wrong file or path" + str(o))  
+                
+                # logging.info("references is " + str(len(references)))
+                non_ideal_program_name = ""
+                caller_object = ""
+                caller_bookmark = ""
+                reference_bookmark_str = ""
+                reference_line_num = ""
+                reference_bookmark_object = ""
+                link_to_be_created = "Y"
+                
+                for reference in references:
+                    non_ideal_program_name = ""
+                    if reference.pattern_name=='CommentedLine':
+                        pass
+                    elif reference.pattern_name == 'calltoprocedure':
+                        ### Create gotlink from Ideal program to 1st Ideal Procedure
+                        if link_to_be_created == "Y":
+                            link_to_be_created = "N"
+                            first_procname = reference.value.split(">>")[0].strip("<<")
+                            lastdostpo = o.get_name().rfind('.')
+                            #caller_name = o.get_name().split(".")[len(o.get_name().split("."))-1]
+                            caller_name = o.get_name()[:lastdostpo]
+                            caller_bookmark_str = str(reference.bookmark)
+                            caller_begin_line =  caller_bookmark_str.split(",")[2]
+                            caller_end_line =  caller_bookmark_str.split(",")[4]
+                            callee_object = reference.object
+                            for keyvalue in ideal_programs.items():
+                                p0 = keyvalue[0]
+                                p1 = keyvalue[1]
+                                #print(p0)
+                                #print(str(p1))
+                                if caller_name.strip() == p0.strip():
+                                    caller_object = p1
+                                    #caller_bookmark = Bookmark(caller_object, caller_begin_line,1,caller_end_line,1)
+                                    caller_bookmark, caller_object = get_reference_data(reference, o)
+                                    link = ("callGotoLink", p1, callee_object, caller_bookmark)
+                                    if link not in new_links:
+                                        new_links.append(link)
+
 
         ## JCL to IDEAL Program Linking
         ## ideal_program_list_obj
@@ -170,22 +248,34 @@ class CobolToIdeal(ApplicationLevelExtension):
                             ideal_pgm_obj = keyvalue[1]
                             if ideal_pgm == ideal_program_name_in_jcldataset:
                                 jcl_ideal_link = ("callLink", jcl_step_idlbatch_caller, ideal_pgm_obj, jcl_dataset_bookmark)
-                                if jcl_ideal_link not in links:
-                                    links.append(jcl_ideal_link)
+                                if jcl_ideal_link not in new_links:
+                                    new_links.append(jcl_ideal_link)
 
         
-        #for obj in  application.get_files(['ideal_program']):
-        #    for sub_object in obj.load_children():
-        #        sub_obj_type = sub_object.get_type()
-        #        if ideal_procedure == 'ideal_procedure':
-        #            print(" sub object is " + str(sub_object))
-                
-        for link in links:
+        logging.info("links is " + str(new_links))
+        for link in new_links:
             logging.info("Link to be created is " + str(link))
             create_link(*link) 
             nbLinkCreated += 1
                 
         logging.info("****** Number of created matchLink/callLink between ideal_program --> cobol/pli/asm : {}".format(str(nbLinkCreated)))
+
+
+def get_reference_data(reference,o):
+
+    caller_object = reference.object
+    caller_bookmark = reference.bookmark
+    reference_bookmark_str = str(caller_bookmark)
+    ###Bookmark(File(AG110BT2, ideal_program), 1281, 1, 1281, 18)
+    reference_bookmark_str = reference_bookmark_str.strip("Bookmark(")
+    reference_bookmark_str = reference_bookmark_str.rstrip(")")
+    reference_line_num = reference_bookmark_str.split("),")[1].split(",")[0]
+    ###Bookmark(file, begin_line, begin_column, end_line, end_column)
+                        
+    reference_bookmark_object = reference_bookmark_str.split("),")[0]  + str(")")
+    caller_object, caller_bookmark_new = find_most_specific_object(o, reference_line_num, 1, 'ideal_procedure')
+    
+    return caller_bookmark_new,  caller_object
 
 
 def find_most_specific_object(_file, linenum, columnnum, _type):
@@ -215,19 +305,3 @@ def find_most_specific_object(_file, linenum, columnnum, _type):
                         return [result,result_position]
     
     return result, result_position
-
-def get_reference_data(reference,o):
-
-    caller_object = reference.object
-    caller_bookmark = reference.bookmark
-    reference_bookmark_str = str(caller_bookmark)
-    ###Bookmark(File(AG110BT2, ideal_program), 1281, 1, 1281, 18)
-    reference_bookmark_str = reference_bookmark_str.strip("Bookmark(")
-    reference_bookmark_str = reference_bookmark_str.rstrip(")")
-    reference_line_num = reference_bookmark_str.split("),")[1].split(",")[0]
-    ###Bookmark(file, begin_line, begin_column, end_line, end_column)
-                        
-    reference_bookmark_object = reference_bookmark_str.split("),")[0]  + str(")")
-    caller_object, caller_bookmark_new = find_most_specific_object(o, reference_line_num, 1, 'ideal_procedure')
-    
-    return caller_bookmark_new,  caller_object
