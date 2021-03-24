@@ -49,9 +49,12 @@
 		<inheritedCategory name="caseInsensitive"/>
 		<inheritedCategory name="IDEAL_Properties"/>
 		<tree parent="callProgLink" category="CalleeLinkable"/>
+		<!-- no more used. commenting out to avoid Warning in UA job log.      BTW, CALL is callProgLink.
 		<tree parent="callLink" category="CalleeLinkable"/>
-		<tree parent="callLink" category="CallerLinkable"/>
+		<tree parent="callLink" category="CallerLinkable"/>   -->
 		<tree parent="includeLink" category="CallerLinkable"/>
+		<tree parent="matchLink" category="CallerLinkable"/>
+		<tree parent="matchLink" category="CalleeLinkable"/>
 		<tree parent="useSelectLink" category="CallerLinkable"/>
 		<tree parent="sourceFile" category="amtParentship"/>
 		<tree parent="ideal_project" category="amtParentship"/>
